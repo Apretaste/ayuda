@@ -7,7 +7,7 @@
 	<tr>
 		<td valign="top">
 			<h2>Pruebe nuestra Tienda por email</h2>
-			<p><b>1.</b> Cree nuevo email. En la secci&oacute;n "Para" escriba: {apretaste_email}</p>
+			<p><b>1.</b> Cree nuevo email. En la secci&oacute;n "Para" escriba: {$APRETASTE_EMAIL}</p>
 			<p><b>2.</b> En la secci&oacute;n "Asunto" escriba: <span style="color:green;">TIENDA televisor LCD</span></p>
 			<p><b>3.</b> Env&iacute;e el email. En segundos recibir&aacute; otro email con televisores a la venta</p>
 			{space10}
@@ -30,7 +30,7 @@
 	<tr>
 		<td valign="top">
 			<h2>Consulte Wikipedia en tiempo real, directo desde Internet</h2>
-			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {apretaste_email}</p>
+			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {$APRETASTE_EMAIL}</p>
 			<p><b>2.</b> En la secci&oacute;n "Asunto" escriba: <span style="color:green;">WIKIPEDIA</span> seguido del nombre de una persona, lugar u obra famosa</p>
 			<p><b>3.</b> Env&iacute;e el email. En segundos recibir&aacute; otro email con la informaci&oacute;n pedida</p>
 			{space10}
@@ -53,7 +53,7 @@
 	<tr>
 		<td valign="top">
 			<h2>Traduzca palabras y documentos a infinidad de idiomas</h2>
-			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {apretaste_email}</p>
+			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {$APRETASTE_EMAIL}</p>
 			<p><b>2.</b> En la secci&oacute;n "Asunto" escriba: <span style="color:green;">TRADUCIR </span> seguido del idioma a traducir</p>
 			<p><b>3.</b> En el cuerpo del mensaje escriba el texto a traducir.</p>
 			<p><b>4.</b> Env&iacute;e el email. En segundos recibir&aacute; otro email con el texto traducido</p>
@@ -77,7 +77,7 @@
 	<tr>
 		<td valign="top">
 			<h2>Vea el mapa de alg&uacute;n barrio o fotos de estructuras famosas</h2>
-			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {apretaste_email}</p>
+			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {$APRETASTE_EMAIL}</p>
 			<p><b>2.</b> En la secci&oacute;n "Asunto" escriba: <span style="color:green;">MAPA</span> seguido de una direcci&oacute;n o del nombre de una estructura famosa</p>
 			<p><b>3.</b> Env&iacute;e el email. En segundos recibir&aacute; otro email con el mapa pedido</p>
 			{space10}
@@ -100,7 +100,7 @@
 	<tr>
 		<td valign="top">
 			<h2>Consultar el estado del tiempo</h2>
-			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {apretaste_email}</p>
+			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {$APRETASTE_EMAIL}</p>
 			<p><b>2.</b> En la secci&oacute;n "Asunto" escriba: <span style="color:green;">CLIMA</span></p>
 			<p><b>3.</b> Env&iacute;e el email. En segundos recibir&aacute; otro email con el estado del tiempo</p>
 			{space10}
@@ -120,7 +120,7 @@
 
 
 <h1>Tenemos muchos m&aacute;s servicios</h1>
-<p>Brindamos muchos m&aacute;s servicios, y todos los meses incrementamos la lista. &#191;Quiere sugerir alg&uacute;n servicio? &#191;Tiene alguna pregunta? Escribanos a <a href="mailto:{apretaste_support_email}">{apretaste_support_email}</a> y le atenderemos al momento.</p>
+<p>Brindamos muchos m&aacute;s servicios, y todos los meses incrementamos la lista. &#191;Quiere sugerir alg&uacute;n servicio? &#191;Tiene alguna pregunta? Escribanos a <a href="mailto:{$APRETASTE_SUPPORT_EMAIL}">{$APRETASTE_SUPPORT_EMAIL}</a> y le atenderemos al momento.</p>
 {space10}
 <center>
 	{button href="SERVICIOS" caption="Otros servicios"}
@@ -134,7 +134,7 @@
 <table>
 	<tr>
 		<td valign="top">
-			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {apretaste_email}</p>
+			<p><b>1.</b> Cree un nuevo email. En la secci&oacute;n "Para" escriba: {$APRETASTE_EMAIL}</p>
 			<p><b>2.</b> En la secci&oacute;n "Asunto" escriba: <span style="color:green;">INVITAR</span> seguido del email de su amigo</p>
 			<p><b>3.</b> Env&iacute;e el email. Su amigo ser&aacute; invitado y usted recibir&aacute; tickets para {link href="RIFA" caption="nuestra rifa"}</p>
 			{space10}
