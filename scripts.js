@@ -2,8 +2,11 @@ $(document).ready(function () {
 	$('.modal').modal();
 	$('.tabs').tabs();
 
-	// display either the list of chats or the message
+	// default values
 	if (typeof chat == 'undefined') chat = [];
+	if (typeof username == 'undefined') username = "";
+
+	// display either the list of chats or the message
 	if(chat.length) $('#chat').css('display', 'block');
 	else $('#msg').css('display', 'block');
 });
@@ -26,7 +29,7 @@ function sendMessage() {
 	});
 
 	// add the message to the screen
-	addTextBubble("salvi", message);
+	addTextBubble(username, message);
 }
 
 function messageLengthValidate() {
@@ -46,7 +49,7 @@ function addTextBubble(username, message) {
 	now = now.replace('a. m.','am');
 
 	// append the bubble to teh screen
-	$('#bubbles').append('<div class="bubble me"><small><b>'+username+'</b> - '+now+'<div class="chip small white-text blue lighten-1">NEW</div></small><br>'+message+'</div>');
+	$('#bubbles').append('<div class="bubble me"><small><b>@'+username+'</b> - '+now+'<div class="chip small white-text blue lighten-1">NEW</div></small><br>'+message+'</div>');
 
 	// scroll to the last bubble
 	var lastBubble = $(".bubble:last-of-type");

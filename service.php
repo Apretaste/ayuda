@@ -101,7 +101,7 @@ class Service
 		}
 
 		// send data to the view
-		$response->setTemplate('soporte.ejs', ['chat' => $chat]);
+		$response->setTemplate('soporte.ejs', ['chat'=>$chat, "username"=>$request->person->username]);
 	}
 
 	/**
