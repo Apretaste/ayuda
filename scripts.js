@@ -1,19 +1,32 @@
 $(document).ready(function () {
 	$('.modal').modal();
 	$('.tabs').tabs();
+
+	// display either the list of chats or the message
+	if (typeof chat == 'undefined') chat = [];
+	if(chat.length) $('#chat').css('display', 'block');
+	else $('#msg').css('display', 'block');
 });
 
 function sendMessage() {
+	// get the message
 	var message = $('#message').val().trim();
-	if(message.length >= 30){
-		apretaste.send({
-			'command':'SOPORTE ESCRIBIR',
-			'data':{'message':message},
-			'redirect':false,
-			'callback':{'name':'sendMessageCallback','data':message}
-		});
+
+	// do not allow short messages
+	if(message.length < 30) {
+		M.toast({html: 'Mínimo 30 caracteres'});
+		return false;
 	}
-	else M.toast({html: 'Mínimo 30 caracteres'});
+
+	// post the message
+	apretaste.send({
+		'command': 'AYUDA ESCRIBIR',
+		'data': {'message': message},
+		'redirect': false
+	});
+
+	// add the message to the screen
+	addTextBubble("salvi", message);
 }
 
 function messageLengthValidate() {
@@ -22,14 +35,10 @@ function messageLengthValidate() {
 	else $('.helper-text').html('Limite excedido');
 }
 
-function sendMessageCallback(message) {
-	// if first time, change headers
-	if($('#main .chat').length == 0) {
-		$('#main h1').remove();
-		$('#main p').remove();
-		$('#main').append('<h1>Su conversación con el soporte</h1>');
-		$('#main').append('<div class="chat"></div>');
-	};
+function addTextBubble(username, message) {
+	// prepare in case ios first time
+	$('#chat').show();
+	$('#msg').hide();
 
 	// create bubble date
 	var now = new Date(Date.now()).toLocaleString();
@@ -37,7 +46,7 @@ function sendMessageCallback(message) {
 	now = now.replace('a. m.','am');
 
 	// append the bubble to teh screen
-	$('.chat').append('<div class="bubble me"><small><b>'+myUsername+'</b> - '+now+'<div class="chip small white-text blue lighten-1">NEW</div></small><br>'+message+'</div>');
+	$('#bubbles').append('<div class="bubble me"><small><b>'+username+'</b> - '+now+'<div class="chip small white-text blue lighten-1">NEW</div></small><br>'+message+'</div>');
 
 	// scroll to the last bubble
 	var lastBubble = $(".bubble:last-of-type");

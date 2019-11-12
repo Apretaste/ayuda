@@ -69,3 +69,7 @@
 .bottom-space {
 	margin-bottom: 60px;
 }
+
+.hidden {
+	display: none;
+}

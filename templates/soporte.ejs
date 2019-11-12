@@ -7,39 +7,41 @@
 	</div>
 </div>
 
-<div class="row">
-	<div id="main" class="col s12">
-		<% if(chat.length > 0) { %>
-			<div class="chat">
-				<% for(var i=0; i<chat.length; i++) { %>
-					<div class="bubble <%= chat[i].class %>">
-						<small>
-							<b>@<%= chat[i].from %></b> - <%= chat[i].date %> 
-							<% var color = chat[i].status=="NEW" ? "white-text blue lighten-1" : "" %>
-							<div class="chip small <%= color %>"><%= chat[i].status %></div>
-						</small>
-						<br>
-						<%= chat[i].text %>
-					</div>
-				<% } %>
+<!-- LIST OF CHATS -->
+<div id="chat" class="row hidden">
+	<div id="bubbles" class="col s12">
+		<% chat.forEach(function(item) { %>
+			<div class="bubble <%= item.class %>">
+				<small>
+					<b>@<%= item.from %></b> - <%= item.date %> 
+					<% var color = item.status=="NEW" ? "white-text blue lighten-1" : "" %>
+					<div class="chip small <%= color %>"><%= item.status %></div>
+				</small>
+				<br>
+				<%= item.text %>
 			</div>
-		<% } else { %>
-			<div class="center-align">
-				<h1>¡Bienvenido al soporte!</h1>
-				<p>Escríbanos para consultar sus dudas o reportar algun inconveniente. Aunque generalmente respondemos en menos de una hora, podemos tardarnos hasta 72 horas en responder.</p>
-			</div>
-		<% } %>
+		<% }) %>
+	</div>
+</div>
+
+<!-- NO CHAT MESSAGE -->
+<div id="msg" class="row hidden">
+	<div class="col s12 center-align">
+		<h1>¡Bienvenido al soporte!</h1>
+		<p>Escríbanos para consultar sus dudas o reportar algun inconveniente. Aunque generalmente respondemos en menos de una hora, podemos tardarnos hasta 72 horas en responder.</p>
 	</div>
 </div>
 
 <div class="bottom-space"></div>
 
+<!-- FLOATING BUTTON -->
 <div class="fixed-action-btn">
 	<a href="#newTicketModal" class="btn-floating btn-large waves-effect waves-light modal-trigger">
 		<i class="large material-icons">message</i>
 	</a>
 </div>
 
+<!-- MODAL NEW TICKET -->
 <div id="newTicketModal" class="modal bottom-sheet">
 	<div class="modal-content">
 		<div class="input-field">
@@ -47,7 +49,7 @@
 			<label for="message">Escriba su duda o inconveniente</label>
 			<span class="helper-text">Restante: 1000</span>
 		</div>
-	</div>	
+	</div>
 	<div class="modal-footer">
 		<a href="#!" class="modal-close waves-effect waves-light btn-flat">Cerrar</a>
 		<a onclick="sendMessage()" class="modal-close waves-effect waves-green btn-flat">Enviar</a>
