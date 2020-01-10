@@ -1,5 +1,10 @@
 <?php
 
+use Apretaste\Request;
+use Apretaste\Response;
+use Framework\Database;
+use Apretaste\Challenges;
+
 class Service
 {
 	/**
@@ -8,7 +13,7 @@ class Service
 	 * @param Request
 	 * @param Response
 	 */
-	public function _main(Request $request, Response $response)
+	public function _main(Request $request, Response &$response)
 	{
 		return $this->_faq($request, $response);
 	}
@@ -16,16 +21,15 @@ class Service
 	/**
 	 * Show the FAQ
 	 *
-	 * @param Request
-	 * @param Response
+	 * @param \Apretaste\Request  $request
+	 * @param \Apretaste\Response $response
+	 *
+	 * @throws \Framework\Alert
 	 */
-	public function _faq(Request $request, Response $response)
+	public function _faq(Request $request, Response &$response)
 	{
 		// get the faq
-		$faq = Connection::query("
-			SELECT id, title, views
-			FROM support_faq
-			ORDER BY (upvote - downvote) DESC");
+		$faq = Database::query('SELECT id, title, views FROM support_faq ORDER BY (upvote - downvote) DESC');
 
 		// send data to the view
 		$response->setCache();
@@ -35,19 +39,21 @@ class Service
 	/**
 	 * Show the answer for an FAQ entry
 	 *
-	 * @param Request
-	 * @param Response
+	 * @param \Apretaste\Request  $request
+	 * @param \Apretaste\Response $response
+	 *
+	 * @throws \Framework\Alert
 	 */
-	public function _respuesta(Request $request, Response $response)
+	public function _respuesta(Request $request, Response &$response)
 	{
 		// get the ID
 		$id = $request->input->data->id;
 
 		// increase the views
-		Connection::query("UPDATE support_faq SET views=views+1 WHERE id=$id");
+		Database::query("UPDATE support_faq SET views=views+1 WHERE id=$id");
 
 		// get the faq
-		$answer = Connection::query("SELECT id, title, body, views FROM support_faq WHERE id=$id")[0];
+		$answer = Database::query("SELECT id, title, body, views FROM support_faq WHERE id=$id")[0];
 		$answer->body = nl2br($answer->body);
 
 		// send data to the view
@@ -58,29 +64,34 @@ class Service
 	/**
 	 * Vote on the answer
 	 *
-	 * @param Request
-	 * @param Response
+	 * @param \Apretaste\Request  $request
+	 * @param \Apretaste\Response $response
+	 *
+	 * @throws \Framework\Alert
 	 */
-	public function _votar(Request $request, Response $response)
+	public function _votar(Request $request, Response &$response)
 	{
 		// get the ID
 		$id = $request->input->data->id;
 		$vote = $request->input->data->vote;
 
 		// upvote or downvote
-		Connection::query("UPDATE support_faq SET {$vote}vote={$vote}vote+1 WHERE id=$id");
+		Database::query("UPDATE support_faq SET {$vote}vote={$vote}vote+1 WHERE id=$id");
 	}
 
 	/**
 	 * Show the conversation with Support
 	 *
-	 * @param Request
-	 * @param Response
+	 * @param \Apretaste\Request  $request
+	 * @param \Apretaste\Response $response
+	 *
+	 * @throws \Framework\Alert
+	 * @throws \Exception
 	 */
-	public function _soporte(Request $request, Response $response)
+	public function _soporte(Request $request, Response &$response)
 	{
 		// get the list of messages
-		$tickets = Connection::query("
+		$tickets = Database::query("
 			SELECT A.*, B.username 
 			FROM support_tickets A 
 			JOIN person B
@@ -111,24 +122,23 @@ class Service
 	 * @param Response $response
 	 * @throws \Exception
 	 */
-	public function _escribir(Request $request, Response $response)
+	public function _escribir(Request $request, Response &$response)
 	{
 		// get params to save
 		$email = $request->person->email;
 		$appName = $request->input->app ?? '';
 		$appVersion = $request->input->appversion ?? '';
 		$osVersion = $request->input->osversion ?? '';
-		$body = Connection::escape($request->input->data->message, 1024);
+		$body = Database::escape($request->input->data->message, 1024);
 
 		// insert the ticket
-		Connection::query("
+		Database::query("
 			INSERT INTO support_tickets (`from_id`, `subject`, `body`, app_name, app_version, os_version)
 			VALUES ({$request->person->id}, 'Ticket from $email', '$body', '$appName', '$appVersion', '$osVersion')");
 
 		// save report
-		Connection::query("
-			INSERT INTO support_reports (inserted, new_count) VALUES (CURRENT_DATE, 1)
-			ON DUPLICATE KEY UPDATE new_count=new_count+1");
+		Database::query('INSERT INTO support_reports (inserted, new_count) VALUES (CURRENT_DATE, 1)
+						  ON DUPLICATE KEY UPDATE new_count=new_count+1');
 
 		// mark challenge as completed
 		Challenges::complete("write-to-support", $request->person->id);
