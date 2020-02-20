@@ -28,6 +28,8 @@ function sendMessage() {
 		'redirect': false
 	});
 
+	$('#message').val('');
+
 	// add the message to the screen
 	addTextBubble(username, message);
 }
