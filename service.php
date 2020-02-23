@@ -8,7 +8,7 @@ use Apretaste\Challenges;
 class Service
 {
 	/**
-	 * Service starting point 
+	 * Service starting point
 	 *
 	 * @param Request
 	 * @param Response
@@ -21,7 +21,7 @@ class Service
 	/**
 	 * Show the FAQ
 	 *
-	 * @param \Apretaste\Request  $request
+	 * @param \Apretaste\Request $request
 	 * @param \Apretaste\Response $response
 	 *
 	 * @throws \Framework\Alert
@@ -39,7 +39,7 @@ class Service
 	/**
 	 * Show the answer for an FAQ entry
 	 *
-	 * @param \Apretaste\Request  $request
+	 * @param \Apretaste\Request $request
 	 * @param \Apretaste\Response $response
 	 *
 	 * @throws \Framework\Alert
@@ -64,7 +64,7 @@ class Service
 	/**
 	 * Vote on the answer
 	 *
-	 * @param \Apretaste\Request  $request
+	 * @param \Apretaste\Request $request
 	 * @param \Apretaste\Response $response
 	 *
 	 * @throws \Framework\Alert
@@ -82,7 +82,7 @@ class Service
 	/**
 	 * Show the conversation with Support
 	 *
-	 * @param \Apretaste\Request  $request
+	 * @param \Apretaste\Request $request
 	 * @param \Apretaste\Response $response
 	 *
 	 * @throws \Framework\Alert
@@ -112,13 +112,13 @@ class Service
 		}
 
 		// send data to the view
-		$response->setTemplate('soporte.ejs', ['chat'=>$chat, "username"=>$request->person->username]);
+		$response->setTemplate('soporte.ejs', ['chat' => $chat, "username" => $request->person->username]);
 	}
 
 	/**
 	 * Create a new ticket
 	 *
-	 * @param Request  $request
+	 * @param Request $request
 	 * @param Response $response
 	 * @throws \Exception
 	 */
