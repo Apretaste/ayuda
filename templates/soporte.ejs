@@ -12,23 +12,22 @@
 	<div id="bubbles" class="col s12">
 		<% chat.forEach(function(item) { %>
 			<div class="bubble <%= item.class %>">
-				<small>
-					<b>@<%= item.from %></b> - <%= item.date %> 
-					<% var color = item.status=="NEW" ? "white-text blue lighten-1" : "" %>
-					<div class="chip small <%= color %>"><%= item.status %></div>
-				</small>
+				<span class="small"><b>@<%= item.from %></b> - <%= item.date %></span>
 				<br>
 				<%= item.text %>
 			</div>
 		<% }) %>
 	</div>
+
+	<div class="col s12">
+		<p class="grey-text center-align small">También puede escribirnos a <%= support %></p>
+	</div>
 </div>
 
 <!-- NO CHAT MESSAGE -->
 <div id="msg" class="row hidden">
-	<div class="col s12 center-align">
-		<h1>¡Bienvenido al soporte!</h1>
-		<p>Escríbanos para consultar sus dudas o reportar algun inconveniente. Aunque generalmente respondemos en menos de una hora, podemos tardarnos hasta 72 horas en responder.</p>
+	<div class="col s12 center-align grey-text">
+		<p>Escríbanos con dudas o sugerencias. Respondemos en menos de una hora pero en casos excepcionales puede tomarnos hasta 72 horas. También puede escribir a <%= support %></p>
 	</div>
 </div>
 

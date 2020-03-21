@@ -51,13 +51,12 @@ function addTextBubble(username, message) {
 	now = now.replace('a. m.','am');
 
 	// append the bubble to teh screen
-	$('#bubbles').append('<div class="bubble me"><small><b>@'+username+'</b> - '+now+'<div class="chip small white-text blue lighten-1">NEW</div></small><br>'+message+'</div>');
+	$('#bubbles').prepend('<div class="bubble me"><span class="small"><b>@'+username+'</b> - '+now+'</span><br>'+message+'</div>');
 
-	// scroll to the last bubble
-	var lastBubble = $(".bubble:last-of-type");
-	if(lastBubble) {
+	// scroll to the first bubble, if exist
+	if(chat.length) {
 		$('html, body').animate({
-			scrollTop: $(".bubble:last-of-type").offset().top
+			scrollTop: $(".bubble:first-of-type").offset().top
 		}, 1000);
 	}
 }

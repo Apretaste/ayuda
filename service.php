@@ -1,8 +1,9 @@
 <?php
 
+use Framework\Config;
+use Framework\Database;
 use Apretaste\Request;
 use Apretaste\Response;
-use Framework\Database;
 use Apretaste\Challenges;
 
 class Service
@@ -21,10 +22,8 @@ class Service
 	/**
 	 * Show the FAQ
 	 *
-	 * @param \Apretaste\Request $request
-	 * @param \Apretaste\Response $response
-	 *
-	 * @throws \Framework\Alert
+	 * @param Request $request
+	 * @param Response $response
 	 */
 	public function _faq(Request $request, Response &$response)
 	{
@@ -39,10 +38,8 @@ class Service
 	/**
 	 * Show the answer for an FAQ entry
 	 *
-	 * @param \Apretaste\Request $request
-	 * @param \Apretaste\Response $response
-	 *
-	 * @throws \Framework\Alert
+	 * @param Request $request
+	 * @param Response $response
 	 */
 	public function _respuesta(Request $request, Response &$response)
 	{
@@ -64,10 +61,8 @@ class Service
 	/**
 	 * Vote on the answer
 	 *
-	 * @param \Apretaste\Request $request
-	 * @param \Apretaste\Response $response
-	 *
-	 * @throws \Framework\Alert
+	 * @param Request $request
+	 * @param Response $response
 	 */
 	public function _votar(Request $request, Response &$response)
 	{
@@ -82,11 +77,8 @@ class Service
 	/**
 	 * Show the conversation with Support
 	 *
-	 * @param \Apretaste\Request $request
-	 * @param \Apretaste\Response $response
-	 *
-	 * @throws \Framework\Alert
-	 * @throws \Exception
+	 * @param Request $request
+	 * @param Response $response
 	 */
 	public function _soporte(Request $request, Response &$response)
 	{
@@ -97,7 +89,7 @@ class Service
 			JOIN person B
 			ON A.from_id = B.id
 			WHERE A.from_id = {$request->person->id} 
-			ORDER BY A.creation_date ASC");
+			ORDER BY A.creation_date DESC");
 
 		// prepare chats for the view
 		$chat = [];
@@ -107,12 +99,20 @@ class Service
 			$message->from = $ticket->username;
 			$message->text = $ticket->body;
 			$message->date = date_format((new DateTime($ticket->creation_date)), 'd/m/Y h:i a');
-			$message->status = $ticket->status;
 			$chat[] = $message;
 		}
 
+		// get the support email address
+		$supportEmail = Config::pick('general')['support_email'];
+
+		// create data for the view
+		$content = [
+			'chat' => $chat, 
+			'username' => $request->person->username,
+			'support' => $supportEmail];
+
 		// send data to the view
-		$response->setTemplate('soporte.ejs', ['chat' => $chat, "username" => $request->person->username]);
+		$response->setTemplate('soporte.ejs', $content);
 	}
 
 	/**
@@ -120,7 +120,6 @@ class Service
 	 *
 	 * @param Request $request
 	 * @param Response $response
-	 * @throws \Exception
 	 */
 	public function _escribir(Request $request, Response &$response)
 	{
@@ -137,8 +136,9 @@ class Service
 			VALUES ({$request->person->id}, 'Ticket from $email', '$body', '$appName', '$appVersion', '$osVersion')");
 
 		// save report
-		Database::query('INSERT INTO support_reports (inserted, new_count) VALUES (CURRENT_DATE, 1)
-						  ON DUPLICATE KEY UPDATE new_count=new_count+1');
+		Database::query('
+			INSERT INTO support_reports (inserted, new_count) VALUES (CURRENT_DATE, 1)
+			ON DUPLICATE KEY UPDATE new_count=new_count+1');
 
 		// mark challenge as completed
 		Challenges::complete("write-to-support", $request->person->id);
