@@ -7,8 +7,14 @@ $(document).ready(function () {
 	if (typeof username == 'undefined') username = "";
 
 	// display either the list of chats or the message
-	if(chat.length) $('#chat').css('display', 'block');
+	if (chat.length) $('#chat').css('display', 'block');
 	else $('#msg').css('display', 'block');
+
+	if (chat.length) {
+		$('html, body').animate({
+			scrollTop: $(".bubble:last-of-type").offset().top
+		}, 1000);
+	}
 });
 
 function sendMessage() {
@@ -16,7 +22,7 @@ function sendMessage() {
 	var message = $('#message').val().trim();
 
 	// do not allow short messages
-	if(message.length < 30) {
+	if (message.length < 30) {
 		M.toast({html: 'Mínimo 30 caracteres'});
 		return false;
 	}
@@ -25,18 +31,17 @@ function sendMessage() {
 	apretaste.send({
 		'command': 'AYUDA ESCRIBIR',
 		'data': {'message': message},
-		'redirect': false
+		'redirect': false,
+		'callback': {
+			'name': 'sendMessageCallback',
+			'data': message
+		}
 	});
-
-	$('#message').val('');
-
-	// add the message to the screen
-	addTextBubble(username, message);
 }
 
 function messageLengthValidate() {
 	var message = $('#message').val().trim();
-	if(message.length <= 1000) $('.helper-text').html('Restante: '+(1000-message.length));
+	if (message.length <= 1000) $('.helper-text').html('Restante: ' + (1000 - message.length));
 	else $('.helper-text').html('Limite excedido');
 }
 
@@ -47,16 +52,16 @@ function addTextBubble(username, message) {
 
 	// create bubble date
 	var now = new Date(Date.now()).toLocaleString();
-	now = now.replace('p. m.','pm');
-	now = now.replace('a. m.','am');
+	now = now.replace('p. m.', 'pm');
+	now = now.replace('a. m.', 'am');
 
 	// append the bubble to teh screen
-	$('#bubbles').prepend('<div class="bubble me"><span class="small"><b>@'+username+'</b> - '+now+'</span><br>'+message+'</div>');
+	$('#bubbles').append('<div class="bubble me"><span class="small"><b>@' + username + '</b> - ' + now + '</span><br>' + message + '</div>');
 
 	// scroll to the first bubble, if exist
-	if(chat.length) {
+	if (chat.length) {
 		$('html, body').animate({
-			scrollTop: $(".bubble:first-of-type").offset().top
+			scrollTop: $(".bubble:last-of-type").offset().top
 		}, 1000);
 	}
 }
@@ -65,10 +70,23 @@ function vote(id, vote) {
 	// save the vote in the backend
 	apretaste.send({
 		"command": "AYUDA VOTAR",
-		"data": {'id':id,'vote':vote},
+		"data": {'id': id, 'vote': vote},
 		"redirect": false
 	});
 
 	// change the message
 	$('#survey').html('¡Gracias por dejarnos su opinión!');
+}
+
+function sendMessageCallback(message) {
+	if (chat.length == 0) {
+		// Jquery Bug, fixed in 1.9, insertBefore or After deletes the element and inserts nothing
+		// $('#messageField').insertBefore("<div class=\"chat\"></div>");
+		$('#nochats').remove();
+		$('#chat').append("<div id=\"bubbles\"></div>");
+	}
+
+	addTextBubble(username, message)
+
+	$('#message').val('');
 }

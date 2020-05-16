@@ -102,6 +102,8 @@ class Service
 			$chat[] = $message;
 		}
 
+		$chat = array_reverse($chat);
+
 		// get the support email address
 		$supportEmail = Config::pick('general')['support_email'];
 
