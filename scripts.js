@@ -23,7 +23,7 @@ function sendMessage() {
 
 	// do not allow short messages
 	if (message.length < 30) {
-		M.toast({html: 'Mínimo 30 caracteres'});
+		M.toast({html: 'Describanos mejor su caso'});
 		return false;
 	}
 
