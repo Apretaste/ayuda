@@ -86,9 +86,10 @@ class Service
 		$tickets = Database::query("
 			SELECT A.*, B.username 
 			FROM support_tickets A 
-			JOIN person B
+			LEFT JOIN person B
 			ON A.from_id = B.id
 			WHERE A.from_id = {$request->person->id} 
+			OR A.requester = '{$request->person->email}'
 			ORDER BY A.creation_date DESC");
 
 		// prepare chats for the view
