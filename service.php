@@ -94,9 +94,11 @@ class Service
 		// prepare chats for the view
 		$chat = [];
 		foreach ($tickets as $ticket) {
+			$isMe = $ticket->requester != $request->person->email;
+
 			$message = new stdClass();
-			$message->class = $ticket->requester != $request->person->email ? "me" : "you";
-			$message->from = $ticket->username;
+			$message->class = $isMe ? "me" : "you";
+			$message->from = $isMe ? $request->person->username : "apretaste";
 			$message->text = $ticket->body;
 			$message->date = date_format((new DateTime($ticket->creation_date)), 'd/m/Y h:i a');
 			$chat[] = $message;
