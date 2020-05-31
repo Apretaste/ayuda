@@ -89,14 +89,13 @@ class Service
 			LEFT JOIN person B
 			ON A.from_id = B.id
 			WHERE A.from_id = {$request->person->id} 
-			OR A.requester = '{$request->person->email}'
 			ORDER BY A.creation_date DESC");
 
 		// prepare chats for the view
 		$chat = [];
 		foreach ($tickets as $ticket) {
 			$message = new stdClass();
-			$message->class = $ticket->from_id == $request->person->id ? "me" : "you";
+			$message->class = $ticket->requester != $request->person->email ? "me" : "you";
 			$message->from = $ticket->username;
 			$message->text = $ticket->body;
 			$message->date = date_format((new DateTime($ticket->creation_date)), 'd/m/Y h:i a');
@@ -110,7 +109,7 @@ class Service
 
 		// create data for the view
 		$content = [
-			'chat' => $chat, 
+			'chat' => $chat,
 			'username' => $request->person->username,
 			'support' => $supportEmail];
 
