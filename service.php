@@ -96,8 +96,7 @@ class Service
 		$chat = [];
 		foreach ($tickets as $ticket) {
 			$isMe = $ticket->from == $request->person->email;
-
-			$message = new stdClass();
+			$message = $ticket;
 			$message->class = $isMe ? "me" : "you";
 			$message->from = $ticket->username;
 			$message->text = $ticket->body;
