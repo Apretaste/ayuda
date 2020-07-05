@@ -100,7 +100,7 @@ class Service
 			$message->class = $isMe ? "me" : "you";
 			$message->from = $ticket->username;
 			$message->text = $ticket->body;
-			$message->date = date_format((new DateTime($ticket->creation_date)), 'd/m/Y h:i a');
+			$message->date = $ticket->creation_date;
 			$chat[] = $message;
 		}
 
