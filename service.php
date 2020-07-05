@@ -84,7 +84,8 @@ class Service
 	{
 		// get the list of messages
 		$tickets = Database::query("
-			SELECT A.*, B.username 
+			SELECT A.*, B.username, B.gender, B.avatar, B.avatarColor as color, 
+			       IF(A.from_id = B.id, 'right', 'left') as position 
 			FROM support_tickets A 
 			LEFT JOIN person B
 			ON A.from = B.email

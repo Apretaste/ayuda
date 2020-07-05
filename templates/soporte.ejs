@@ -17,6 +17,19 @@
 				<%= item.text %>
 			</div>
 		<% }) %>
+
+		<ul class="chat">
+			<% chat.forEach(function(item) { %>
+				<li class="<%= item.position %>">
+					<div class="person-avatar circle" face="<%= item.avatar %>" color="<%= item.color %>" size="30"></div>
+					<div class="head">
+						<a href="#!" class="<%= item.gender %>">@<%= item.username %></a>
+						<span class="date"><%= moment(item.date).format('MMM D, YYYY h:mm A') %></span>
+					</div>
+					<span class="text"><%= item.text %></span>
+				</li>
+			<% }) %>
+		</ul>
 	</div>
 
 	<div class="col s12">
