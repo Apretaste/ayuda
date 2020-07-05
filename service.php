@@ -88,7 +88,7 @@ class Service
 			       IF(A.from_id = B.id, 'right', 'left') as position 
 			FROM support_tickets A 
 			LEFT JOIN person B
-			ON A.from = B.email
+			ON A.from = B.email OR A.from_id = B.id
 			WHERE A.from_id = {$request->person->id} 
 			ORDER BY A.creation_date DESC");
 
