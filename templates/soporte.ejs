@@ -10,14 +10,6 @@
 <!-- LIST OF CHATS -->
 <div id="chat" class="row hidden">
 	<div id="bubbles" class="col s12">
-		<% chat.forEach(function(item) { %>
-			<div class="bubble <%= item.class %>">
-				<span class="small"><b>@<%= item.from %></b> - <%= item.date %></span>
-				<br>
-				<%= item.text %>
-			</div>
-		<% }) %>
-
 		<ul class="chat">
 			<% chat.forEach(function(item) { %>
 				<li class="<%= item.position %>">

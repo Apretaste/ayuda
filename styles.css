@@ -119,3 +119,54 @@
 .card.user-card .action a {
 	color: inherit;
 }
+
+
+/* CHAT */
+
+ul.chat {
+	position: relative;
+}
+
+ul.chat li {
+	display: inline-block;
+	clear: both;
+	width: 80%;
+	padding: 10px 20px;
+	border-radius: 20px;
+	margin-bottom: 3px;
+}
+
+.chat .left {
+	color: #757575;
+	background: #eee;
+	margin-left: 15px;
+	float: none;
+}
+
+.chat .left .person-avatar {
+	position: relative;
+	top: 25px;
+	left: -35px;
+	margin-top: -30px;
+	float: left;
+}
+
+.chat .right {
+	color: #fff;
+	background: #66bb6a;
+	margin-right: 15px;
+	float: right;
+}
+
+.chat .right .person-avatar {
+	position: relative;
+	top: 25px;
+	right: -35px;
+	margin-top: -30px;
+	float: right;
+}
+
+.chat .date {
+	margin-left: 5px;
+	font-size: x-small;
+}
