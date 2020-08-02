@@ -115,6 +115,7 @@ class Service
 	public function _chat(Request $request, Response &$response)
 	{
 		$parent = $response->input->data->parent;
+		$ticket = Database::queryFirst("select * from support_tickets where id = '$parent'");
 
 		// get the list of messages
 		$tickets = Database::query("
@@ -148,7 +149,9 @@ class Service
 			'chat' => $chat,
 			'username' => $request->person->username,
 			'support' => $supportEmail,
-            'parentTicket' => $parent];
+			'parentTicket' => $parent,
+			'ticket' => $ticket
+		  ];
 
 		// send data to the view
 		$response->setTemplate('soporte.ejs', $content);

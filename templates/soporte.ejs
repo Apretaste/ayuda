@@ -2,12 +2,13 @@
 	<div class="col s12">
 		<ul class="tabs tabs-fixed-width">
 			<li class="tab"><a href="#" onclick="apretaste.send({command: 'AYUDA FAQ'})">Preguntas</a></li>
-			<li class="tab"><a href="#" class="active">Soporte</a></li> 
+			<li class="tab"><a href="#" onclick="apretaste.send({command: 'AYUDA SOPORTE'})">Soporte</a></li>
 		</ul>
 	</div>
 </div>
 
 <input type="hidden" value="<%= parentTicket %>" id="parent">
+<p><%= <%= moment(ticket.creation_date).format('MMM D, YYYY h:mm A') %> %><%= ticket.body %></p>
 
 <!-- LIST OF CHATS -->
 <div class="row">
