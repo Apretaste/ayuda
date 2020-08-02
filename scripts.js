@@ -33,7 +33,7 @@ function sendMessage() {
 	};
 
 	if (parentTicket !== '') {
-		message.parentTicket = parentTicket;
+		data.parentTicket = parentTicket;
 	}
 
 	// post the message
