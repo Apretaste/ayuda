@@ -20,6 +20,7 @@ $(document).ready(function () {
 function sendMessage() {
 	// get the message
 	var message = $('#message').val().trim();
+	var parent = $('#parent').val().trim();
 
 	// do not allow short messages
 	if (message.length < 30) {
@@ -27,14 +28,22 @@ function sendMessage() {
 		return false;
 	}
 
+	var data = {
+		message: message
+	};
+
+	if (parent !== '') {
+		message.parent = parent;
+	}
+
 	// post the message
 	apretaste.send({
-		'command': 'AYUDA ESCRIBIR',
-		'data': {'message': message},
-		'redirect': false,
-		'callback': {
-			'name': 'sendMessageCallback',
-			'data': message
+		command: 'AYUDA ESCRIBIR',
+		data: data,
+		redirect: false,
+		callback: {
+			name: 'sendMessageCallback',
+			data: message
 		}
 	});
 }

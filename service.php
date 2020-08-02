@@ -74,14 +74,48 @@ class Service
 		Database::query("UPDATE support_faq SET {$vote}vote={$vote}vote+1 WHERE id=$id");
 	}
 
+	public function _soporte(Request $request, Response &$response)
+	{
+		// get the list of messages
+		$tickets = Database::query("
+			SELECT A.* 
+			FROM support_tickets A 
+			LEFT JOIN person B ON A.from = B.email OR A.from_id = B.id
+			WHERE A.from_id = {$request->person->id} AND A.parent is null and (A.status = 'NEW' OR A.status = 'PENDING')
+			ORDER BY A.creation_date DESC");
+
+		// prepare chats for the view
+		$chat = [];
+		foreach ($tickets as $ticket) {
+			$isMe = $ticket->from == $request->person->email;
+			$message = $ticket;
+			$message->text = $ticket->body;
+			$message->date = $ticket->creation_date;
+			$chat[] = $message;
+		}
+
+		// get the support email address
+		$supportEmail = Config::pick('general')['support_email'];
+
+		// create data for the view
+		$content = [
+			'tickets' => $chat,
+			'support' => $supportEmail];
+
+		// send data to the view
+		$response->setTemplate('tickets.ejs', $content);
+	}
+
 	/**
 	 * Show the conversation with Support
 	 *
 	 * @param Request $request
 	 * @param Response $response
 	 */
-	public function _soporte(Request $request, Response &$response)
+	public function _chat(Request $request, Response &$response)
 	{
+		$parent = $response->input->data->parent;
+
 		// get the list of messages
 		$tickets = Database::query("
 			SELECT A.*, B.username, B.gender, B.avatar, B.avatarColor as color, 
@@ -89,7 +123,7 @@ class Service
 			FROM support_tickets A 
 			LEFT JOIN person B
 			ON A.from = B.email OR A.from_id = B.id
-			WHERE A.from_id = {$request->person->id} 
+			WHERE A.from_id = {$request->person->id} AND A.parent = $parent
 			ORDER BY A.creation_date DESC");
 
 		// prepare chats for the view
@@ -133,11 +167,12 @@ class Service
 		$appVersion = $request->input->appversion ?? '';
 		$osVersion = $request->input->osversion ?? '';
 		$body = Database::escape($request->input->data->message, 1024);
+		$parent = $request->input->data->parent ?? '';
 
 		// insert the ticket
 		Database::query("
-			INSERT INTO support_tickets (`from_id`, `subject`, `body`, app_name, app_version, os_version)
-			VALUES ({$request->person->id}, 'Ticket from $email', '$body', '$appName', '$appVersion', '$osVersion')");
+			INSERT INTO support_tickets (`from_id`, `subject`, `body`, app_name, app_version, os_version, parent)
+			VALUES ({$request->person->id}, 'Ticket from $email', '$body', '$appName', '$appVersion', '$osVersion', NULLIF('$parent', ''))");
 
 		// save report
 		Database::query('
