@@ -115,7 +115,7 @@ class Service
 	public function _chat(Request $request, Response &$response)
 	{
 		$parent = $response->input->data->parent;
-		$ticket = Database::queryFirst("select * from support_tickets where id = '$parent'");
+		$ticketRecord = Database::queryFirst("select * from support_tickets where id = '$parent'");
 
 		// get the list of messages
 		$tickets = Database::query("
@@ -150,7 +150,7 @@ class Service
 			'username' => $request->person->username,
 			'support' => $supportEmail,
 			'parentTicket' => $parent,
-			'ticket' => $ticket
+			'ticket' => $ticketRecord
 		  ];
 
 		// send data to the view
