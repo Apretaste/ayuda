@@ -14,7 +14,6 @@
         <ul class="collection one-line">
             <% tickets.forEach(function(item) { %>
                 <li class="collection-item avatar">
-                    <i class="tiny material-icons circle"><%= item.icon %></i>
                     <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
                         <i class="tiny material-icons circle fa fa-envelope-open"></i>
                     </a>
