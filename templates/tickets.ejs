@@ -12,12 +12,15 @@
 <!-- LIST OF CHATS -->
 <div class="row">
     <div class="col s12 bubble">
-        <ul class="chat">
+        <ul class="collection one-line">
             <% tickets.forEach(function(item) { %>
-                <li>
-                    <span class="date"><%= moment(item.date).format('MMM D, YYYY h:mm A') %></span>
-                    <span class="text"><%= item.text %></span>
-                    <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});"><i class="fa fa-facebook-messenger"></i></a>
+                <li class="collection-item avatar">
+                    <i class="tiny material-icons circle"><%= item.icon %></i>
+                    <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
+                        <i class="tiny material-icons circle fa fa-envelope-open"></i>
+                    </a>
+                    <span class="title"><%= item.text %></span>
+                    <p class="blue-grey-text"><%= moment(item.date).format('MMM D, YYYY h:mm A')  %></p>
                 </li>
             <% }) %>
         </ul>
