@@ -20,7 +20,7 @@ $(document).ready(function () {
 function sendMessage() {
 	// get the message
 	var message = $('#message').val().trim();
-	var parent = $('#parent').val().trim();
+	var parentTicket = $('#parent').val().trim();
 
 	// do not allow short messages
 	if (message.length < 30) {
@@ -32,8 +32,8 @@ function sendMessage() {
 		message: message
 	};
 
-	if (parent !== '') {
-		message.parent = parent;
+	if (parentTicket !== '') {
+		message.parentTicket = parentTicket;
 	}
 
 	// post the message

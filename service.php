@@ -147,7 +147,8 @@ class Service
 		$content = [
 			'chat' => $chat,
 			'username' => $request->person->username,
-			'support' => $supportEmail];
+			'support' => $supportEmail,
+            'parentTicket' => $parent];
 
 		// send data to the view
 		$response->setTemplate('soporte.ejs', $content);
@@ -167,12 +168,12 @@ class Service
 		$appVersion = $request->input->appversion ?? '';
 		$osVersion = $request->input->osversion ?? '';
 		$body = Database::escape($request->input->data->message, 1024);
-		$parent = $request->input->data->parent ?? '';
+		$parentTicket = $request->input->data->parentTicket ?? '';
 
 		// insert the ticket
 		Database::query("
 			INSERT INTO support_tickets (`from_id`, `subject`, `body`, app_name, app_version, os_version, parent)
-			VALUES ({$request->person->id}, 'Ticket from $email', '$body', '$appName', '$appVersion', '$osVersion', NULLIF('$parent', ''))");
+			VALUES ({$request->person->id}, 'Ticket from $email', '$body', '$appName', '$appVersion', '$osVersion', NULLIF('$parentTicket', ''))");
 
 		// save report
 		Database::query('
