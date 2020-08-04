@@ -13,13 +13,13 @@
     <div class="col s12 bubble">
         <ul class="collection one-line">
             <% tickets.forEach(function(item) { %>
+                <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
                 <li class="collection-item avatar">
-                    <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
-                        <i class="tiny material-icons circle fa fa-envelope-open"></i>
-                    </a>
+                    <i class="tiny material-icons circle fa fa-envelope-open"></i>
                     <span class="title"><%= item.text %></span>
                     <p class="blue-grey-text"><%= moment(item.date).format('MMM D, YYYY h:mm A')  %></p>
                 </li>
+                </a>
             <% }) %>
         </ul>
     </div>
