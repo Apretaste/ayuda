@@ -124,7 +124,7 @@ class Service
 			FROM support_tickets A 
 			LEFT JOIN person B
 			ON A.from = B.email OR A.from_id = B.id
-			WHERE A.from_id = {$request->person->id} AND A.parent = $parent
+			WHERE A.from_id = {$request->person->id} AND A.parent = '$parent'
 			ORDER BY A.creation_date DESC");
 
 		// prepare chats for the view
