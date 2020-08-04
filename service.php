@@ -114,7 +114,7 @@ class Service
 	 */
 	public function _chat(Request $request, Response &$response)
 	{
-		$parent = $response->input->data->parent;
+		$parent = $response->input->data->parent ?? '';
 		$ticketRecord = Database::queryFirst("select * from support_tickets where id = '$parent'");
 
 		// get the list of messages
@@ -190,7 +190,7 @@ class Service
 			return $this->_soporte($request, $response);
 		}
 
-		$request->input->parent = $parentTicket;
+		$request->input->data->parent = $parentTicket;
 		return $this->_chat($request, $response);
 	}
 }
