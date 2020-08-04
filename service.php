@@ -185,5 +185,12 @@ class Service
 
 		// mark challenge as completed
 		Challenges::complete("write-to-support", $request->person->id);
+
+		if (empty($parentTicket)) {
+			return $this->_soporte($request, $response);
+		}
+
+		$request->input->parent = $parentTicket;
+		return $this->_chat($request, $response);
 	}
 }
