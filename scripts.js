@@ -40,7 +40,7 @@ function sendMessage() {
 	apretaste.send({
 		command: 'AYUDA ESCRIBIR',
 		data: data,
-		redirect: false,
+		redirect: parentTicket === '',
 		callback: {
 			name: 'sendMessageCallback',
 			data: message
