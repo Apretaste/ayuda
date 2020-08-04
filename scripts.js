@@ -40,11 +40,11 @@ function sendMessage() {
 	apretaste.send({
 		command: 'AYUDA ESCRIBIR',
 		data: data,
-		redirect: parentTicket === '',
+		redirect: true /*,
 		callback: {
 			name: 'sendMessageCallback',
 			data: message
-		}
+		}*/
 	});
 }
 
@@ -70,7 +70,7 @@ function addTextBubble(username, message) {
 	// scroll to the first bubble, if exist
 	if (chat.length) {
 		$('html, body').animate({
-			scrollTop: $(".bubble:last-of-type").offset().top
+			scrollTop: $(".bubble:last-of-type").offset.top
 		}, 1000);
 	}
 }
