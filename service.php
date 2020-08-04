@@ -115,6 +115,15 @@ class Service
 	public function _chat(Request $request, Response &$response)
 	{
 		$parent = $response->input->data->parent ?? '';
+
+		if (empty($parent)) {
+			$parent = $response->input->data->parentTicket ?? '';
+		}
+
+		if (empty($parent)) {
+			return $this->_soporte($request, $response);
+		}
+
 		$ticketRecord = Database::queryFirst("select * from support_tickets where id = '$parent'");
 
 		// get the list of messages
