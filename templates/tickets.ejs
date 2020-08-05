@@ -17,7 +17,7 @@
                 <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
                 <li class="collection-item avatar">
                     <i class="tiny material-icons circle fa fa-comment"></i>
-                    <% if (item.comments > 1) { %>
+                    <% if (item.comments > 0) { %>
                         <span class="badge comments"><%= item.comments %></span>
                     <% } %>
                     <span class="title"><%= item.text %></span>
