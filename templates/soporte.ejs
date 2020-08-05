@@ -11,10 +11,7 @@
 	<div class="col s12">
 		<input type="hidden" value="<%= parentTicket %>" id="parent">
 		<ul class="collection one-line">
-			<li class="collection-item avatar">
-				<a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= ticket.id %>}});">
-					<i class="tiny material-icons circle">mail</i>
-				</a>
+			<li class="collection-item">
 				<span class="title"><%= ticket.body %></span>
 				<p class="blue-grey-text"><%= moment(ticket.creation_date).format('MMM D, YYYY h:mm A')  %></p>
 			</li>
