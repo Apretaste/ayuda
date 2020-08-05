@@ -14,7 +14,7 @@
         <p class="blue-grey-text">Estos son tus tickets o dudas. Puedes agregar uno nuevo y por cada uno seleccionarlo para establecer una conversaci&oacute;n con el soporte, donde recibir&aacute;s las respuestas.</p>
         <ul class="collection one-line">
             <% tickets.forEach(function(item) { %>
-                <li class="collection-item avatar">
+                <li class="collection-item">
                     <% if (item.comments > 0) { %>
                         <span class="badge comments"><%= item.comments %></span>
                     <% } %>
