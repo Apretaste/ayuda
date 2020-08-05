@@ -16,7 +16,7 @@
             <% tickets.forEach(function(item) { %>
                 <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
                 <li class="collection-item avatar">
-                    <i class="tiny material-icons circle fa fa-envelope">mail</i>
+                    <i class="tiny material-icons circle">mail</i>
                     <% if (item.comments > 0) { %>
                         <span class="badge comments"><%= item.comments %></span>
                     <% } %>
@@ -53,6 +53,6 @@
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cerrar</a>
-        <a onclick="sendMessage(2)" class="modal-close waves-effect waves-green btn-flat">Enviar</a>
+        <a onclick="sendMessage(30)" class="modal-close waves-effect waves-green btn-flat">Enviar</a>
     </div>
 </div>

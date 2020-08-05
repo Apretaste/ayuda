@@ -13,7 +13,7 @@
 		<ul class="collection one-line">
 			<li class="collection-item avatar">
 				<a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= ticket.id %>}});">
-					<i class="tiny material-icons circle fa fa-envelope-open">mail</i>
+					<i class="tiny material-icons circle">mail</i>
 				</a>
 				<span class="title"><%= ticket.body %></span>
 				<p class="blue-grey-text"><%= moment(ticket.creation_date).format('MMM D, YYYY h:mm A')  %></p>
@@ -71,6 +71,6 @@
 	</div>
 	<div class="modal-footer">
 		<a href="#!" class="modal-close waves-effect waves-light btn-flat">Cerrar</a>
-		<a onclick="sendMessage(30)" class="modal-close waves-effect waves-green btn-flat">Enviar</a>
+		<a onclick="sendMessage(2)" class="modal-close waves-effect waves-green btn-flat">Enviar</a>
 	</div>
 </div>
