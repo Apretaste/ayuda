@@ -17,13 +17,16 @@ $(document).ready(function () {
 	}
 });
 
-function sendMessage() {
+function sendMessage(minLength) {
+
+	if (typeof minLength == 'undefined') minLength = 30;
+
 	// get the message
 	var message = $('#message').val().trim();
 	var parentTicket = $('#parent').val().trim();
 
 	// do not allow short messages
-	if (message.length < 30) {
+	if (message.length < minLength) {
 		M.toast({html: 'Describanos mejor su caso'});
 		return false;
 	}
