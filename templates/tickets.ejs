@@ -10,7 +10,7 @@
 <input type="hidden" value="" id="parent">
 
 <div class="row">
-    <div class="col s12 bubble">
+    <div class="col s12">
         <p class="blue-grey-text">Estos son tus tickets o dudas. Puedes agregar uno nuevo y por cada uno seleccionarlo para establecer una conversaci&oacute;n con el soporte, donde recibir&aacute;s las respuestas.</p>
         <ul class="collection one-line" style="border: none;">
             <% tickets.forEach(function(item) { %>
@@ -27,13 +27,6 @@
     </div>
 
     <div class="col s12">
-        <p class="grey-text center-align small">También puede escribirnos a <%= support %></p>
-    </div>
-</div>
-
-<!-- NO CHAT MESSAGE -->
-<div id="msg" class="row hidden">
-    <div class="col s12 center-align grey-text">
         <p>Escríbanos con dudas o sugerencias. Respondemos en menos de una hora pero en casos excepcionales puede tomarnos hasta 72 horas. También puede escribir a <%= support %></p>
     </div>
 </div>
