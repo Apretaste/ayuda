@@ -14,16 +14,16 @@
         <p class="blue-grey-text">Estos son tus tickets o dudas. Puedes agregar uno nuevo y por cada uno seleccionarlo para establecer una conversaci&oacute;n con el soporte, donde recibir&aacute;s las respuestas.</p>
         <ul class="collection one-line" style="border: none;">
             <% tickets.forEach(function(item) { %>
-                <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
                 <li class="collection-item avatar">
-                    <i class="tiny material-icons circle">mail</i>
                     <% if (item.comments > 0) { %>
                         <span class="badge comments"><%= item.comments %></span>
                     <% } %>
-                    <span class="title"><%= item.text %></span>
+                    <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
+                        <span class="title"><%= item.text %></span>
+                    </a>
                     <p class="blue-grey-text"><%= moment(item.date).format('MMM D, YYYY h:mm A')  %></p>
                 </li>
-                </a>
+
             <% }) %>
         </ul>
     </div>
