@@ -17,7 +17,9 @@
                 <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
                 <li class="collection-item avatar">
                     <i class="tiny material-icons circle fa fa-comment"></i>
-                    <span class="badge comments"><%= item.comments %></span>
+                    <% if (item.comments > 1) { %>
+                        <span class="badge comments"><%= item.comments %></span>
+                    <% } %>
                     <span class="title"><%= item.text %></span>
                     <p class="blue-grey-text"><%= moment(item.date).format('MMM D, YYYY h:mm A')  %></p>
                 </li>
