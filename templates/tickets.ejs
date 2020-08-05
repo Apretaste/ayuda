@@ -11,13 +11,13 @@
 
 <div class="row">
     <div class="col s12 bubble">
+        <p>Estos son tus tickets pendientes. Puedes agregar uno nuevo y por cada uno seleccionarlo para establecer una conversaci&oacute;n con el soporte, donde recibir&aacute;s las respuestas.</p>
         <ul class="collection one-line">
-            <p>Estas son tus tickets pendientes. Puedes agregar uno nuevo y por cada uno seleccionarlo para establecer una conversaci&oacute;n con el soporte.</p>
             <% tickets.forEach(function(item) { %>
                 <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
                 <li class="collection-item avatar">
                     <i class="tiny material-icons circle fa fa-comment"></i>
-                    <span class="new badge"><%= item.comments %></span>
+                    <span class="badge"><%= item.comments %></span>
                     <span class="title"><%= item.text %></span>
                     <p class="blue-grey-text"><%= moment(item.date).format('MMM D, YYYY h:mm A')  %></p>
                 </li>
