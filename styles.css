@@ -168,3 +168,10 @@ ul.chat li {
 	margin-left: 5px;
 	font-size: x-small;
 }
+
+span.comments {
+	background: #eeeeee;
+	color: white;
+	border-radius: 2px;
+	padding: 2px;
+}

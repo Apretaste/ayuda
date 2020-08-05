@@ -17,7 +17,7 @@
                 <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
                 <li class="collection-item avatar">
                     <i class="tiny material-icons circle fa fa-comment"></i>
-                    <span class="badge"><%= item.comments %></span>
+                    <span class="badge comments"><%= item.comments %></span>
                     <span class="title"><%= item.text %></span>
                     <p class="blue-grey-text"><%= moment(item.date).format('MMM D, YYYY h:mm A')  %></p>
                 </li>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="col s12">
-        <p>Escríbanos con dudas o sugerencias. Respondemos en menos de una hora pero en casos excepcionales puede tomarnos hasta 72 horas. También puede escribir a <%= support %></p>
+        <p class="blue-grey-text center">Escríbanos con dudas o sugerencias. Respondemos en menos de una hora pero en casos excepcionales puede tomarnos hasta 72 horas. También puede escribir a <%= support %></p>
     </div>
 </div>
 
