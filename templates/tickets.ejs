@@ -16,7 +16,7 @@
             <% tickets.forEach(function(item) { %>
                 <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
                 <li class="collection-item avatar">
-                    <i class="tiny material-icons circle fa fa-comment"></i>
+                    <i class="tiny material-icons circle fa fa-envelope">mail</i>
                     <% if (item.comments > 0) { %>
                         <span class="badge comments"><%= item.comments %></span>
                     <% } %>
