@@ -81,7 +81,7 @@ class Service
 			SELECT A.*, (select count(id) from support_tickets where parent = A.id) as comments
 			FROM support_tickets A 
 			LEFT JOIN person B ON A.from = B.email OR A.from_id = B.id
-			WHERE A.from_id = {$request->person->id} AND A.parent is null and (A.status <> 'ARCHIVED')
+			WHERE A.from_id = {$request->person->id} AND A.parent is null and (A.status <> 'ARCHIVED' AND A.status <> 'CLOSED')
 			ORDER BY A.creation_date DESC");
 
 		// prepare chats for the view
