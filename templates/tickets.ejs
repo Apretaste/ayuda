@@ -15,17 +15,14 @@
         <% tickets.forEach(function(item) { %>
 
             <div class="card">
-                <div class="card-person grey lighten-5">
-                    <div class="person-avatar circle left"></div>
-                    <a href="#!" class="F" onclick="apretaste.send({command:'BAREBONE PROFILE'})">@salvipascual</a>
-
+                <div class="card-person grey lighten-5 person-avatar">
                     <% if (item.comments > 0) { %>
-                        <span class="chip tiny clear left">
+                        <span class="tiny clear left">
                         <i class="material-icons icon">message</i> <%= item.comments %>
                         </span>
                     <% } %>
 
-                    <span class="chip tiny clear right">
+                    <span class="tiny clear right">
                         <i class="material-icons icon">perm_contact_calendar</i> <%= moment(item.date).format('D [de] MMM , YYYY h:mm A') %>
                     </span>
                 </div>
