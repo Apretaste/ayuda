@@ -15,19 +15,19 @@
         <% tickets.forEach(function(item) { %>
 
             <div class="card">
-                <div class="card-person grey lighten-5 person-avatar">
+                <div class="card-person grey lighten-5" style="min-height: 45px;">
                     <% if (item.comments > 0) { %>
-                        <span class="tiny clear left">
+                        <span class="chip tiny clear left">
                         <i class="material-icons icon">message</i> <%= item.comments %>
                         </span>
                     <% } %>
 
-                    <span class="tiny clear right">
+                    <span class="chip tiny clear right">
                         <i class="material-icons icon">perm_contact_calendar</i> <%= moment(item.date).format('D [de] MMM , YYYY h:mm A') %>
                     </span>
                 </div>
                 <div class="card-content">
-                    <p><% item.text %></p>
+                    <p><% item.body %></p>
                 </div>
 
                 <div class="card-action grey lighten-4">
