@@ -12,20 +12,32 @@
 <div class="row">
     <div class="col s12">
         <p class="blue-grey-text">Estos son tus tickets o dudas. Puedes agregar uno nuevo y por cada uno seleccionarlo para establecer una conversaci&oacute;n con el soporte, donde recibir&aacute;s las respuestas.</p>
-        <ul class="collection one-line">
-            <% tickets.forEach(function(item) { %>
-                <li class="collection-item">
-                    <% if (item.comments > 0) { %>
-                        <span class="badge comments"><%= item.comments %></span>
-                    <% } %>
-                    <a href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">
-                        <span class="title"><%= item.text %></span>
-                    </a>
-                    <p class="blue-grey-text"><%= moment(item.date).format('MMM D, YYYY h:mm A')  %></p>
-                </li>
+        <% tickets.forEach(function(item) { %>
 
-            <% }) %>
-        </ul>
+            <div class="card">
+                <div class="card-person grey lighten-5">
+                    <div class="person-avatar circle left"></div>
+                    <a href="#!" class="F" onclick="apretaste.send({command:'BAREBONE PROFILE'})">@salvipascual</a>
+
+                    <% if (item.comments > 0) { %>
+                        <span class="chip tiny clear left">
+                        <i class="material-icons icon">message</i> <%= item.comments %>
+                        </span>
+                    <% } %>
+
+                    <span class="chip tiny clear right">
+                        <i class="material-icons icon">perm_contact_calendar</i> <%= moment(item.date).format('D [de] MMM , YYYY h:mm A') %>
+                    </span>
+                </div>
+                <div class="card-content">
+                    <p><% item.text %></p>
+                </div>
+
+                <div class="card-action grey lighten-4">
+                    <a class="green-text" href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">Ver mas</a>
+                </div>
+            </div>
+        <% }) %>
     </div>
 
     <div class="col s12">
@@ -53,6 +65,6 @@
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cerrar</a>
-        <a onclick="sendMessage(30)" class="modal-close waves-effect waves-green btn-flat">Enviar</a>
+        <a onclick="sendMessage(30)" class="modal-close waves-effect waves-green btn-flat green-text">Enviar</a>
     </div>
 </div>
