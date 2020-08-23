@@ -26,10 +26,10 @@
                 </div>
                 <div class="card-content">
                     <p><%= item.text %></p>
-                </div>
-                <span class="chip tag1 tiny" style="margin-top: 10px;">
-                    <i class="material-icons icon tiny">tag</i> <%= status[item.status] %>
+                    <span class="chip tag1 tiny" style="margin-top: 10px;">
+                    <i class="material-icons icon tiny">label</i> <%= status[item.status] %>
                 </span>
+                </div>
                 <div class="card-action grey lighten-4">
                     <a class="green-text" href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">Ver mas</a>
                 </div>
