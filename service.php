@@ -124,12 +124,12 @@ class Service
 			return $this->_soporte($request, $response);
 		}
 
-		$ticketRecord = Database::queryFirst("select * from support_tickets where id = '$parent'");
+		$ticketRecord = Database::queryFirst("select body as text, *, (select count(id) from support_tickets where parent = A.id) as comments from support_tickets where id = '$parent'");
 
 		// get the list of messages
 		$tickets = Database::query("
 			SELECT A.*, B.username, B.gender, B.avatar, B.avatarColor as color, 
-			       IF(A.from_id = B.id, 'right', 'left') as position 
+			       IF(A.from_id = B.id, 'right', 'left') as position
 			FROM support_tickets A 
 			LEFT JOIN person B
 			ON A.from = B.email OR A.from_id = B.id
