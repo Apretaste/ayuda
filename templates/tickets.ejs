@@ -14,24 +14,21 @@
         <% tickets.forEach(function(item) { %>
             <div class="card">
                 <div class="card-person grey lighten-5" style="min-height: 45px;">
-                    <% if (item.comments > 0) { %>
-                        <span class="chip tiny clear left">
-                        <i class="material-icons icon">message</i> <%= item.comments %>
-                        </span>
-                    <% } %>
-
-                    <span class="chip tiny clear right">
+                    <span class="chip tiny clear left">
                         <i class="material-icons icon">perm_contact_calendar</i> <%= moment(item.date).format('D [de] MMM, YYYY h:mm A') %>
                     </span>
                 </div>
                 <div class="card-content">
                     <p><%= item.text %></p>
                     <span class="chip tag1 tiny" style="margin-top: 10px;">
-                    <i class="material-icons icon tiny">label</i> <%= status[item.status] %>
-                </span>
+                        <i class="material-icons icon tiny">label</i> <%= status[item.status] %>
+                    </span>
+                    <span class="chip tiny clear left">
+                        <i class="material-icons icon">message</i> <%= item.comments %>
+                    </span>
                 </div>
                 <div class="card-action grey lighten-4">
-                    <a class="green-text" href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">Ver mas</a>
+                    <a class="green-text" href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">Ver m&aacute;s</a>
                 </div>
             </div>
         <% }) %>

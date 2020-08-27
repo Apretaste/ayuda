@@ -1,14 +1,5 @@
 <div class="row">
 	<div class="col s12">
-		<ul class="tabs tabs-fixed-width">
-			<li class="tab"><a href="#" onclick="apretaste.send({command: 'AYUDA FAQ'})">Preguntas</a></li>
-			<li class="tab"><a href="#" class="active" onclick="apretaste.send({command: 'AYUDA SOPORTE'})">Soporte</a></li>
-		</ul>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col s12">
 		<input type="hidden" value="<%= parentTicket %>" id="parent">
 		<ul class="collection one-line">
 			<li class="collection-item">
@@ -36,16 +27,13 @@
 		</ul>
 	</div>
 
-	<div class="col s12">
-		<p class="grey-text center-align small">También puede escribirnos a <%= support %></p>
+	<!-- NO CHAT MESSAGE -->
+	<div id="msg" class="row hidden">
+		<div class="col s12 center-align grey-text">
+			<p>Escríbanos con dudas o sugerencias. Respondemos en menos de un día, pero en casos excepcionales puede demorarnos hasta 72 horas. También puede escribir a <%= support %></p>
+		</div>
 	</div>
-</div>
 
-<!-- NO CHAT MESSAGE -->
-<div id="msg" class="row hidden">
-	<div class="col s12 center-align grey-text">
-		<p>Escríbanos con dudas o sugerencias. Respondemos en menos de una hora pero en casos excepcionales puede tomarnos hasta 72 horas. También puede escribir a <%= support %></p>
-	</div>
 </div>
 
 <div class="bottom-space"></div>

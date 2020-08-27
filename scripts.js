@@ -53,7 +53,7 @@ function sendMessage(minLength) {
 
 function messageLengthValidate() {
 	var message = $('#message').val().trim();
-	if (message.length <= 500) $('.helper-text').html('Restante: ' + (500 - message.length));
+	if (message.length <= 200) $('.helper-text').html('Restante: ' + (200 - message.length));
 	else $('.helper-text').html('Limite excedido');
 }
 
