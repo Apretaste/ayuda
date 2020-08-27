@@ -1,3 +1,5 @@
+var status = {NEW: 'NUEVO', PENDING: 'PENDIENTE', DONE: 'TERMINADO'};
+
 $(document).ready(function () {
 	$('.modal').modal();
 	$('.tabs').tabs();
