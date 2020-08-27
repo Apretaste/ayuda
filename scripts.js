@@ -1,8 +1,9 @@
-var status = {NEW: 'NUEVO', PENDING: 'PENDIENTE', DONE: 'TERMINADO'};
-
+var status;
 $(document).ready(function () {
 	$('.modal').modal();
 	$('.tabs').tabs();
+
+	status = {NEW: 'NUEVO', PENDING: 'PENDIENTE', DONE: 'TERMINADO'};
 
 	// default values
 	if (typeof chat == 'undefined') chat = [];
