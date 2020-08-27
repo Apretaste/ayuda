@@ -146,6 +146,7 @@ class Service
 			$message->text = $ticket->body;
 			$message->date = $ticket->creation_date;
 			$chat[] = $message;
+			$message->avatar = $message->avatar ?? ($message->gender === 'F' ? 'chica' : 'hombre');
 		}
 
 		$chat = array_reverse($chat);
