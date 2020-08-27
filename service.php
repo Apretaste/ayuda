@@ -124,7 +124,7 @@ class Service
 			return $this->_soporte($request, $response);
 		}
 
-		$ticketRecord = Database::queryFirst("select body as text, *, (select count(id) from support_tickets where parent = A.id) as comments from support_tickets where id = '$parent'");
+		$ticketRecord = Database::queryFirst("select A.body as text, A.*, (select count(id) from support_tickets where parent = A.id) as comments from support_tickets A where A.id = '$parent'");
 
 		// get the list of messages
 		$tickets = Database::query("
