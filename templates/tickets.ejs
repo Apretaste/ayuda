@@ -18,12 +18,12 @@
                         <i class="material-icons icon">perm_contact_calendar</i> <%= moment(item.date).format('D [de] MMM, YYYY h:mm A') %>
                     </span>
                 </div>
-                <div class="card-content">
+                <div class="card-content" style="padding-top:5px;padding-bottom: 5px;">
                     <p><%= item.text %></p>
                     <span class="chip tag1 tiny" style="margin-top: 10px;">
                         <i class="material-icons icon tiny">label</i> <%= status[item.status] %>
                     </span>
-                    <span class="chip tiny clear">
+                    <span class="chip tag1 tiny">
                         <i class="material-icons icon">message</i> <%= item.comments %>
                     </span>
                 </div>
