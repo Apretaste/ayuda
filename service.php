@@ -197,7 +197,7 @@ class Service
 		Challenges::complete("write-to-support", $request->person->id);
 
 		if (empty($parentTicket)) {
-			return $this->_soporte($request, $response);
+			return null; //$this->_soporte($request, $response);
 		}
 
 		$request->input->data->parent = $parentTicket;

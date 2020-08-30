@@ -37,20 +37,32 @@ function sendMessage(minLength) {
 
 	if (parentTicket !== '') {
 		data.parentTicket = parentTicket;
+		// post the message
+		apretaste.send({
+			command: 'AYUDA ESCRIBIR',
+			data: data,
+			redirect: true
+		});
+	} else  {
+		// post the message
+		apretaste.send({
+			command: 'AYUDA ESCRIBIR',
+			data: data,
+			redirect: false,
+			callback: {
+				name: 'showSoporte',
+				data: {}
+			}
+		});
 	}
-
-	// post the message
+}
+function showSoporte(){
 	apretaste.send({
-		command: 'AYUDA ESCRIBIR',
-		data: data,
-		redirect: true /*,
-		callback: {
-			name: 'sendMessageCallback',
-			data: message
-		}*/
+		command: 'AYUDA SOPORTE',
+		data: {},
+		redirect: true
 	});
 }
-
 function messageLengthValidate() {
 	var message = $('#message').val().trim();
 	if (message.length <= 200) $('.helper-text').html('Restante: ' + (200 - message.length));
