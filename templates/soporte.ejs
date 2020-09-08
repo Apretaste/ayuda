@@ -1,21 +1,23 @@
-<div class="row">
-	<div class="col s12">
-		<ul class="tabs tabs-fixed-width">
-			<li class="tab"><a href="#" onclick="apretaste.send({command: 'AYUDA FAQ'})">Preguntas</a></li>
-			<li class="tab"><a href="#" class="active" onclick="apretaste.send({command: 'AYUDA SOPORTE'})">Soporte</a></li>
-		</ul>
-	</div>
-</div>
-
-<div class="row">
+<% var status = {NEW: 'NUEVO', PENDING: 'PENDIENTE', DONE: 'TERMINADO'}; %>
+<div class="row" style="margin-bottom: 0px; margin-top:15px;">
 	<div class="col s12">
 		<input type="hidden" value="<%= parentTicket %>" id="parent">
-		<ul class="collection one-line">
-			<li class="collection-item">
-				<span class="title"><%= ticket.body %></span>
-				<p class="blue-grey-text"><%= moment(ticket.creation_date).format('MMM D, YYYY h:mm A')  %></p>
-			</li>
-		</ul>
+		<div class="card">
+			<div class="card-person grey lighten-5" style="min-height: 45px;">
+                    <span class="chip tiny clear left">
+                        <i class="material-icons icon">perm_contact_calendar</i> <%= moment(ticket.date).format('D [de] MMM, YYYY h:mm A') %>
+                    </span>
+			</div>
+			<div class="card-content" style="padding-top:5px;padding-bottom: 5px;">
+				<p><%= ticket.text %></p>
+				<span class="chip tag1 tiny" style="margin-top: 10px;">
+                        <i class="material-icons icon tiny">label</i> <%= status[ticket.status] %>
+                    </span>
+					<span class="chip tiny tag1">
+                        <i class="material-icons icon">message</i> <%= ticket.comments %>
+                    </span>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -36,16 +38,13 @@
 		</ul>
 	</div>
 
-	<div class="col s12">
-		<p class="grey-text center-align small">También puede escribirnos a <%= support %></p>
+	<!-- NO CHAT MESSAGE -->
+	<div id="msg" class="row hidden" style="margin-top:10px;">
+		<div class="col s12 center-align grey-text">
+			<p>Respondemos en menos de un día, pero en algunos casos puede demorarnos hasta 72 horas.</p>
+		</div>
 	</div>
-</div>
 
-<!-- NO CHAT MESSAGE -->
-<div id="msg" class="row hidden">
-	<div class="col s12 center-align grey-text">
-		<p>Escríbanos con dudas o sugerencias. Respondemos en menos de una hora pero en casos excepcionales puede tomarnos hasta 72 horas. También puede escribir a <%= support %></p>
-	</div>
 </div>
 
 <div class="bottom-space"></div>
@@ -66,11 +65,11 @@
 		<div class="input-field">
 			<textarea id="message" class="materialize-textarea" oninput="messageLengthValidate()"></textarea>
 			<label for="message">Escriba su comentario</label>
-			<span class="helper-text">Restante: 1000</span>
+			<span class="helper-text">Restante: 200</span>
 		</div>
 	</div>
 	<div class="modal-footer">
 		<a href="#!" class="modal-close waves-effect waves-light btn-flat">Cerrar</a>
-		<a onclick="sendMessage(2)" class="modal-close waves-effect waves-green btn-flat">Enviar</a>
+		<a onclick="sendMessage(2)" class="modal-close waves-effect waves-green btn-flat green-text">Enviar</a>
 	</div>
 </div>

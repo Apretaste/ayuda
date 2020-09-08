@@ -124,12 +124,12 @@ class Service
 			return $this->_soporte($request, $response);
 		}
 
-		$ticketRecord = Database::queryFirst("select * from support_tickets where id = '$parent'");
+		$ticketRecord = Database::queryFirst("select A.body as text, A.*, (select count(id) from support_tickets where parent = A.id) as comments from support_tickets A where A.id = '$parent'");
 
 		// get the list of messages
 		$tickets = Database::query("
 			SELECT A.*, B.username, B.gender, B.avatar, B.avatarColor as color, 
-			       IF(A.from_id = B.id, 'right', 'left') as position 
+			       IF(A.from_id = B.id, 'right', 'left') as position
 			FROM support_tickets A 
 			LEFT JOIN person B
 			ON A.from = B.email OR A.from_id = B.id
@@ -146,6 +146,7 @@ class Service
 			$message->text = $ticket->body;
 			$message->date = $ticket->creation_date;
 			$chat[] = $message;
+			$message->avatar = $message->avatar ?? ($message->gender === 'F' ? 'chica' : 'hombre');
 		}
 
 		$chat = array_reverse($chat);
@@ -196,7 +197,7 @@ class Service
 		Challenges::complete("write-to-support", $request->person->id);
 
 		if (empty($parentTicket)) {
-			return $this->_soporte($request, $response);
+			return null; //$this->_soporte($request, $response);
 		}
 
 		$request->input->data->parent = $parentTicket;
