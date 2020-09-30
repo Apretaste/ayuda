@@ -1,68 +1,62 @@
-<% var status = {NEW: 'NUEVO', PENDING: 'PENDIENTE', DONE: 'TERMINADO'}; %>
 <div class="row">
-    <div class="col s12">
-        <ul class="tabs tabs-fixed-width">
-            <li class="tab"><a href="#" onclick="apretaste.send({command: 'AYUDA FAQ'})">Preguntas</a></li>
-            <li class="tab"><a href="#" class="active">Soporte</a></li>
-        </ul>
-    </div>
+	<div class="col s12">
+		<ul class="tabs tabs-fixed-width">
+			<li class="tab"><a href="#" onclick="apretaste.send({command: 'AYUDA FAQ'})">Preguntas</a></li>
+			<li class="tab"><a href="#" class="active">Soporte</a></li>
+		</ul>
+	</div>
 </div>
 
-<input type="hidden" value="" id="parent">
 <div class="row">
-    <div class="col s12">
-        <% tickets.forEach(function(item) { %>
-            <div class="card">
-                <div class="card-person grey lighten-5" style="min-height: 45px;">
-                    <span class="chip tiny clear left">
-                        <i class="material-icons icon">perm_contact_calendar</i> <%= moment(item.date).format('D [de] MMM, YYYY h:mm A') %>
-                    </span>
-                </div>
-                <div class="card-content" style="padding-top:5px;padding-bottom: 5px;">
-                    <p><%= item.text %></p>
-                    <span class="chip tag1 tiny" style="margin-top: 10px;">
-                        <i class="material-icons icon tiny">label</i> <%= status[item.status] %>
-                    </span>
-                    <span class="chip tag1 tiny">
-                        <i class="material-icons icon">message</i> <%= item.comments %>
-                    </span>
-                </div>
-                <div class="card-action grey lighten-4">
-                    <a class="green-text" href="#!" onclick="apretaste.send({command: 'AYUDA CHAT', data:{parent: <%= item.id %>}});">Ver m&aacute;s</a>
-                </div>
-            </div>
-        <% }) %>
+	<div class="col s12">
+		<% if (tickets.length < 1) { %>
+			<div class="col s12 center">
+				<p class="middle-center grey-text">Escriba su primer ticket para comunicar con el soporte. También puede escribirnos a <%= support %></p>
+			</div>
+		<% } else { %>
+			<% tickets.forEach(function(item) { %>
+				<div class="card">
+					<div class="card-person grey lighten-5">
+						<span class="chip tiny clear"><i class="material-icons icon">perm_contact_calendar</i> <%= moment(item.inserted).format('D [de] MMM, YYYY h:mm A') %></span>
+						<span class="chip tiny clear right <%= item.status %>"><i class="material-icons icon">label</i> <%= statusCode[item.status] %></span>
+					</div>
+					<div class="card-content">
+						<p><%= item.title %></p>
+					</div>
+					<div class="card-action grey lighten-4">
+						<a class="green-text" href="#!" onclick="apretaste.send({command:'AYUDA CHAT', data:{id:<%= item.id %>}});">Ver más</a>
+						<span class="chip tiny clear right"><i class="material-icons icon">message</i> <%= item.comments %></span>
+					</div>
+				</div>
+			<% }) %>
 
-        <% if (tickets.length < 1) { %>
-            <div class="col s12 center">
-                <p class="middle-center grey-text">Escriba su primer ticket para comunicar con el soporte. También puede escribirnos a <%= support %></p>
-            </div>
-        <% } else { %>
-            <p class="blue-grey-text left"><small>También puede escribir a <%= support %></small></p>
-        <% } %>
-    </div>
+			<p class="blue-grey-text"><small>También puede escribir a <%= support %></small></p>
+		<% } %>
+	</div>
 </div>
+
+<!-- BUTTONS -->
 
 <div class="bottom-space"></div>
 
-<!-- FLOATING BUTTON -->
 <div class="fixed-action-btn">
-    <a href="#newTicketModal" class="btn-floating btn-large waves-effect waves-light modal-trigger">
-        <i class="large material-icons">add</i>
-    </a>
+	<a href="#newTicketModal" class="btn-floating btn-large waves-effect waves-light modal-trigger">
+		<i class="large material-icons">add</i>
+	</a>
 </div>
 
 <!-- MODAL NEW TICKET -->
+
 <div id="newTicketModal" class="modal bottom-sheet">
-    <div class="modal-content">
-        <div class="input-field">
-            <textarea id="message" class="materialize-textarea" oninput="messageLengthValidate()"></textarea>
-            <label for="message">Escriba su duda o inconveniente</label>
-            <span class="helper-text">Restante: 500</span>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cerrar</a>
-        <a onclick="sendMessage(30)" class="modal-close waves-effect waves-green btn-flat green-text">Enviar</a>
-    </div>
+	<div class="modal-content">
+		<div class="input-field">
+			<textarea id="message" class="materialize-textarea" oninput="checkLength(500)"></textarea>
+			<label for="message">Escriba su duda o inconveniente</label>
+			<span class="helper-text">Restante: 500</span>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-close waves-effect waves-light btn-flat">Cerrar</a>
+		<a onclick="createTicket()" class="modal-close waves-effect waves-green btn-flat green-text">Enviar</a>
+	</div>
 </div>

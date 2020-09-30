@@ -1,9 +1,10 @@
 {
 	"name": "ayuda",
-	"description": "Muestra las preguntas más frecuentes en Apretaste, y le permite comunicar con nosotros sus dudas o sugerencias.",
+	"caption": "Ayuda",
+	"icon": "fas fa-headset",
+	"description": "Muestra las preguntas más frecuentes en Apretaste, y le permite preguntar a Apretín sus dudas o sugerencias.",
 	"creator": "salvi@apretaste.org",
-	"category": "comunicaciones",
+	"category": "utiles",
 	"listed": true,
-	"guest": true,
-	"caption": "Ayuda"
+	"guest": true
 }

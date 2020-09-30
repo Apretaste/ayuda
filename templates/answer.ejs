@@ -1,15 +1,15 @@
 <div class="row">
 	<div class="col s12">
 		<h1><%= answer.title %></h1>
-		<p class="grey-text"><%= answer.views %> vistas</p>
+		<span class="chip"><i class="fas fa-eye"></i> <%= answer.views %></span>
 		<p><%- answer.body %></p>
 	</div>
 </div>
 
 <div class="row">
 	<div id="survey" class="col s12 green lighten-5 center-align">
-		<div style="margin-bottom:5px;">¿Qué le parece esta explicación?</div>
-		<a class="waves-effect waves-light btn-small green" onclick="vote('<%= answer.id %>','up')" style="margin-right:5px;"><i class="material-icons left">thumb_up</i>Buena</a>
+		<p>¿Qué le parece esta explicación?</p>
+		<a class="waves-effect waves-light btn-small green spacing" onclick="vote('<%= answer.id %>','up')"><i class="material-icons left">thumb_up</i>Buena</a>
 		<a class="waves-effect waves-light btn-small red" onclick="vote('<%= answer.id %>','down')"><i class="material-icons left">thumb_down</i>Mala</a>
 	</div>
 </div>

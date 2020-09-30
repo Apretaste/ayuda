@@ -1,95 +1,98 @@
+// create array of the statuses
+var statusCode = {NEW:'Nuevo', PENDING:'Abierto', CLOSED:'Cerrado'};
+
+// start the components
+//
 $(document).ready(function () {
 	$('.modal').modal();
 	$('.tabs').tabs();
-
-	// default values
-	if (typeof chat == 'undefined') chat = [];
-	if (typeof username == 'undefined') username = "";
-
-	// display either the list of chats or the message
-	if (chat.length) $('#chat').css('display', 'block');
-	else $('#msg').css('display', 'block');
-
-	if (chat.length) {
-		$('html, body').animate({
-			scrollTop: $(".bubble:last-of-type").offset().top
-		}, 1000);
-	}
 });
 
-function sendMessage(minLength) {
-
-	if (typeof minLength == 'undefined') minLength = 30;
-
+// start a new ticket
+//
+function createTicket() {
 	// get the message
 	var message = $('#message').val().trim();
-	var parentTicket = $('#parent').val().trim();
 
 	// do not allow short messages
-	if (message.length < minLength) {
-		M.toast({html: 'Describanos mejor su caso'});
+	if (message.length < 30) {
+		M.toast({html: 'Describa mejor su caso'});
 		return false;
 	}
 
-	var data = {
-		message: message
-	};
-
-	if (parentTicket !== '') {
-		data.parentTicket = parentTicket;
-		// post the message
-		apretaste.send({
-			command: 'AYUDA ESCRIBIR',
-			data: data,
-			redirect: true
-		});
-	} else  {
-		// post the message
-		apretaste.send({
-			command: 'AYUDA ESCRIBIR',
-			data: data,
-			redirect: false,
-			callback: {
-				name: 'showSoporte',
-				data: {}
-			}
-		});
-	}
-}
-function showSoporte(){
+	// create the ticket
 	apretaste.send({
-		command: 'AYUDA SOPORTE',
-		data: {},
+		command: 'AYUDA TICKET',
+		data: {message: message},
 		redirect: true
 	});
 }
-function messageLengthValidate() {
-	var message = $('#message').val().trim();
-	if (message.length <= 200) $('.helper-text').html('Restante: ' + (200 - message.length));
-	else $('.helper-text').html('Limite excedido');
-}
 
-function addTextBubble(username, message) {
-	// prepare in case ios first time
+// send a new chat
+//
+function chat() {
+	// get message and user features
+	var message = $('#message').val().trim();
+	var ticketId = $('#message').attr('ticket');
+	var username = $('#message').attr('username');
+	var gender = $('#message').attr('gender');
+	var avatar = $('#message').attr('avatar');
+	var avatarColor = $('#message').attr('avatarColor');
+
+	// do not allow short messages
+	if (message.length < 2) {
+		M.toast({html: 'Debe escribir un texto'});
+		return false;
+	}
+
+	// send the chat
+	apretaste.send({
+		command: 'AYUDA ESCRIBIR',
+		data: {message:message, id:ticketId},
+		redirect: false
+	});
+
+	// if is the first chat
 	$('#chat').show();
 	$('#msg').hide();
 
-	// create bubble date
-	var now = new Date(Date.now()).toLocaleString();
-	now = now.replace('p. m.', 'pm');
-	now = now.replace('a. m.', 'am');
-
 	// append the bubble to teh screen
-	$('#bubbles').append('<div class="bubble me"><span class="small"><b>@' + username + '</b> - ' + now + '</span><br>' + message + '</div>');
+	$('#chat').append(
+		'<li id="last" class="right">' +
+		'	<div class="person-avatar circle" face="'+ avatar +'" color="'+ avatarColor +'" size="30"></div>' +
+		'	<div class="head">' +
+		'		<a href="#!" class="' + gender + '">@' + username + '</a>' +
+		'		<span class="date">' +  moment().format('MMM D, YYYY h:mm A') + '</span>' +
+		'	</div>' +
+		'	<span class="text">' + message + '</span>' +
+		'</li>');
 
-	// scroll to the first bubble, if exist
-	if (chat.length) {
-		$('html, body').animate({
-			scrollTop: $(".bubble:last-of-type").offset.top
-		}, 1000);
+	// re-create avatar
+	setElementAsAvatar($('#last .person-avatar').get());
+
+	// clean the chat field
+	$('#message').val('');
+
+	// scroll to the lastest chat
+	$('html, body').animate({
+		scrollTop: $("#last").offset().top
+	}, 1000);
+}
+
+// calculate remaining characteres
+//
+function checkLength(size=200) {
+	var message = $('#message').val().trim();
+	if (message.length <= size) $('.helper-text').html('Restante: ' + (size - message.length));
+	else {
+		message = message.substring(0, size);
+		$('#message').val(message);
+		$('.helper-text').html('Límite excedido');
 	}
 }
 
+// vote for an FAQ entry
+//
 function vote(id, vote) {
 	// save the vote in the backend
 	apretaste.send({
@@ -100,17 +103,4 @@ function vote(id, vote) {
 
 	// change the message
 	$('#survey').html('¡Gracias por dejarnos su opinión!');
-}
-
-function sendMessageCallback(message) {
-	if (chat.length == 0) {
-		// Jquery Bug, fixed in 1.9, insertBefore or After deletes the element and inserts nothing
-		// $('#messageField').insertBefore("<div class=\"chat\"></div>");
-		$('#nochats').remove();
-		$('#chat').append("<div id=\"bubbles\"></div>");
-	}
-
-	addTextBubble(username, message)
-
-	$('#message').val('');
 }
