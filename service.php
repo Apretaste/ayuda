@@ -47,7 +47,18 @@ class Service
 	public function _respuesta(Request $request, Response $response)
 	{
 		// get the ID
-		$id = $request->input->data->id;
+		$id = $request->input->data->id ?? '';
+
+		// display an error message
+		if(empty($id)) {
+			return $response->setTemplate('message.ejs', [
+				'header' => 'Algo raro pasó',
+				'icon' => 'sentiment_dissatisfied',
+				'text' => 'Hemos encontrado un problema temporal abriendo el servicio. Es posible que se arregle si reintenta desde el inicio.',
+				'btnLink' => 'AYUDA', 
+				'btnCaption' => 'Reintentar'
+			]);
+		}
 
 		// increase the views
 		Database::query("UPDATE support_faq SET views=views+1 WHERE id=$id");
@@ -70,8 +81,13 @@ class Service
 	public function _votar(Request $request, Response $response)
 	{
 		// get the ID
-		$id = $request->input->data->id;
-		$vote = $request->input->data->vote;
+		$id = $request->input->data->id ?? '';
+		$vote = $request->input->data->vote ?? '';
+
+		// do not continue with blank data
+		if(empty($id) || empty($vote)) {
+			return false;
+		}
 
 		// upvote or downvote
 		Database::query("UPDATE support_faq SET {$vote}vote={$vote}vote+1 WHERE id=$id");
@@ -115,15 +131,30 @@ class Service
 	public function _ticket(Request $request, Response $response)
 	{
 		// get params
-		$message = Database::escape($request->input->data->message, 500);
-		$appName = $request->input->appName ?? '';
+		$message = $request->input->data->message ?? '';
+		$method = $request->input->method ?? '';
+		$osType = $request->input->osType ?? '';
 		$appVersion = $request->input->appVersion ?? '';
 		$osVersion = $request->input->osVersion ?? '';
 
+		// display an error message
+		if(empty($message)) {
+			return $response->setTemplate('message.ejs', [
+				'header' => 'Algo raro pasó',
+				'icon' => 'sentiment_dissatisfied',
+				'text' => 'Hemos encontrado un problema temporal abriendo el servicio. Es posible que se arregle si reintenta desde el inicio.',
+				'btnLink' => 'AYUDA', 
+				'btnCaption' => 'Reintentar'
+			]);
+		}
+
+		// escape message text
+		$title = Database::escape($message);
+
 		// insert the ticket
 		Database::query("
-			INSERT INTO support_tickets (person_id, title, app_name, app_version, os_version)
-			VALUES ({$request->person->id}, '$message', '$appName', '$appVersion', '$osVersion')");
+			INSERT INTO support_tickets (person_id, title, method, os_type, app_version, os_version, updated)
+			VALUES ({$request->person->id}, '$title', '$method', '$osType', '$appVersion', '$osVersion', CURRENT_TIMESTAMP)");
 
 		// save report
 		Database::query('
@@ -152,6 +183,17 @@ class Service
 	{
 		// get params
 		$id = $response->input->data->id ?? '';
+
+		// display an error message
+		if(empty($id)) {
+			return $response->setTemplate('message.ejs', [
+				'header' => 'Algo raro pasó',
+				'icon' => 'sentiment_dissatisfied',
+				'text' => 'Hemos encontrado un problema temporal abriendo el servicio. Es posible que se arregle si reintenta desde el inicio.',
+				'btnLink' => 'AYUDA', 
+				'btnCaption' => 'Reintentar'
+			]);
+		}
 
 		// get the ticket
 		$ticket = Database::queryFirst("
@@ -196,13 +238,19 @@ class Service
 	public function _escribir(Request $request, Response $response)
 	{
 		// get params to save
-		$id = $request->input->data->id;
-		$message = Database::escape($request->input->data->message, 200);
+		$id = $request->input->data->id ?? '';
+		$message = $request->input->data->message ?? '';
 
 		// do not save empty chats
 		if(empty($id) || empty($message)) {
 			return false;
 		}
+
+		// escape the message
+		$message = Database::escape($message, 200);
+
+		// update the date of last contact
+		Database::query("UPDATE support_tickets SET updated=CURRENT_TIMESTAMP WHERE id=$id");
 
 		// insert the chat
 		Database::query("
