@@ -137,8 +137,11 @@ class Service
 		$appVersion = $request->input->appVersion ?? '';
 		$osVersion = $request->input->osVersion ?? '';
 
+		// escape message text
+		$title = trim(Database::escape($message));
+
 		// display an error message
-		if(empty($message)) {
+		if(empty($title)) {
 			return $response->setTemplate('message.ejs', [
 				'header' => 'Algo raro pasó',
 				'icon' => 'sentiment_dissatisfied',
@@ -147,9 +150,6 @@ class Service
 				'btnCaption' => 'Reintentar'
 			]);
 		}
-
-		// escape message text
-		$title = Database::escape($message);
 
 		// insert the ticket
 		Database::query("
@@ -241,16 +241,16 @@ class Service
 		$id = $request->input->data->id ?? '';
 		$message = $request->input->data->message ?? '';
 
+		// escape the message
+		$message = trim(Database::escape($message, 200));
+
 		// do not save empty chats
 		if(empty($id) || empty($message)) {
 			return false;
 		}
 
-		// escape the message
-		$message = Database::escape($message, 200);
-
 		// update the date of last contact
-		Database::query("UPDATE support_tickets SET updated=CURRENT_TIMESTAMP WHERE id=$id");
+		Database::query("UPDATE support_tickets SET updated=CURRENT_TIMESTAMP, unread_chats=1 WHERE id=$id");
 
 		// insert the chat
 		Database::query("
