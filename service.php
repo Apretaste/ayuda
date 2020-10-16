@@ -1,10 +1,11 @@
 <?php
 
-use Framework\Config;
-use Framework\Database;
 use Apretaste\Request;
 use Apretaste\Response;
 use Apretaste\Challenges;
+use Framework\Config;
+use Framework\Database;
+use Framework\GoogleAnalytics;
 
 class Service
 {
@@ -164,6 +165,9 @@ class Service
 		// mark challenge as completed
 		Challenges::complete("write-to-support", $request->person->id);
 
+		// submit to Google Analytics 
+		GoogleAnalytics::event('support_ticket', $request->person->id);
+
 		// display the OK message
 		$response->setTemplate('message.ejs', [
 			'header' => 'Ticket creado',
@@ -248,6 +252,9 @@ class Service
 		if(empty($id) || empty($message)) {
 			return false;
 		}
+
+		// submit to Google Analytics 
+		GoogleAnalytics::event('support_comment', $request->person->id);
 
 		// update the date of last contact
 		Database::query("UPDATE support_tickets SET updated=CURRENT_TIMESTAMP, unread_chats=1 WHERE id=$id");
