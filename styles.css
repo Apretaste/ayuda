@@ -4,7 +4,7 @@
 	padding: 150px 40px 0px 40px;
 }
 
-.CLOSED {
+.solved, .closed {
 	color: #e53935 !important;
 }
 
