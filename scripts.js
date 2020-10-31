@@ -1,5 +1,5 @@
 // create array of the statuses
-var statusCode = {NEW:'Nuevo', PENDING:'Abierto', CLOSED:'Cerrado'};
+var statusCode = {new:'Nuevo', open:'Abierto', pending:'Pendiente', solved:'Cerrado', closed:'Cerrado'};
 
 // start the components
 //

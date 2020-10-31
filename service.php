@@ -4,6 +4,7 @@ use Apretaste\Request;
 use Apretaste\Response;
 use Apretaste\Challenges;
 use Framework\Config;
+use Framework\Zendesk;
 use Framework\Database;
 use Framework\GoogleAnalytics;
 
@@ -103,20 +104,14 @@ class Service
 	public function _soporte(Request $request, Response $response)
 	{
 		// get the list of messages
-		$tickets = Database::query("
-			SELECT 
-				id, title, status, inserted,
-				(SELECT COUNT(id) FROM support_chats WHERE ticket_id = support_tickets.id) AS comments
-			FROM support_tickets
-			WHERE person_id = {$request->person->id}
-			ORDER BY inserted DESC");
+		$tickets = Zendesk::getTickets($request->person);
 
 		// get the support email address
 		$supportEmail = Config::pick('general')['support_email'];
 
 		// create data for the view
 		$content = [
-			'tickets' => $tickets,
+			'tickets' => array_reverse($tickets),
 			'support' => $supportEmail];
 
 		// send data to the view
@@ -131,14 +126,8 @@ class Service
 	 */
 	public function _ticket(Request $request, Response $response)
 	{
-		// get params
-		$message = $request->input->data->message ?? '';
-		$method = $request->input->method ?? '';
-		$osType = $request->input->osType ?? '';
-		$appVersion = $request->input->appVersion ?? '';
-		$osVersion = $request->input->osVersion ?? '';
-
 		// escape message text
+		$message = $request->input->data->message ?? '';
 		$title = trim(Database::escape($message));
 
 		// display an error message
@@ -146,21 +135,14 @@ class Service
 			return $response->setTemplate('message.ejs', [
 				'header' => 'Algo raro pasó',
 				'icon' => 'sentiment_dissatisfied',
-				'text' => 'Hemos encontrado un problema temporal abriendo el servicio. Es posible que se arregle si reintenta desde el inicio.',
-				'btnLink' => 'AYUDA', 
+				'text' => 'Hemos encontrado un problema agregando su ticket. Es posible que se arregle si reintenta nuevamente.',
+				'btnLink' => 'AYUDA SOPORTE',
 				'btnCaption' => 'Reintentar'
 			]);
 		}
 
-		// insert the ticket
-		Database::query("
-			INSERT INTO support_tickets (person_id, title, method, os_type, app_version, os_version, updated)
-			VALUES ({$request->person->id}, '$title', '$method', '$osType', '$appVersion', '$osVersion', CURRENT_TIMESTAMP)");
-
-		// save report
-		Database::query('
-			INSERT INTO support_reports (inserted, new_count) VALUES (CURRENT_DATE, 1)
-			ON DUPLICATE KEY UPDATE new_count=new_count+1');
+		// create the ticket in Zendesk
+		Zendesk::createTicket($request->person, $request->input, $title);
 
 		// mark challenge as completed
 		Challenges::complete("write-to-support", $request->person->id);
@@ -200,32 +182,31 @@ class Service
 		}
 
 		// get the ticket
-		$ticket = Database::queryFirst("
-			SELECT 
-				A.id, A.title, A.status, A.inserted,
-				B.username, B.gender, B.avatar, B.avatarColor
-			FROM support_tickets A 
-			JOIN person B ON A.person_id = B.id
-			WHERE A.id = $id");
+		$ticket = Zendesk::getTicketDetails($id);
 
-		// get the chats
-		$chats = Database::query("
-			SELECT 
-				A.message, A.inserted, B.username, B.gender, B.avatar, B.avatarColor,
-				IF(B.id = {$request->person->id}, 'right', 'left') AS position
-			FROM support_chats A
-			JOIN person B ON A.person_id = B.id
-			WHERE A.ticket_id = $id
-			ORDER BY A.inserted ASC
-			LIMIT 50");
+		// add ticket person values
+		$owner = (Object) [
+			'username' => $request->person->username,
+			'gender' => $request->person->gender,
+			'avatar' => $request->person->avatar,
+			'avatarColor' => $request->person->avatarColor
+		];
+
+		// add user data to the ticket
+		foreach ($ticket->comments as $item) {
+			$item->position = ($ticket->creator == $item->creator) ? 'right' : 'left';
+			$item->username = ($ticket->creator == $item->creator) ? $request->person->username : 'apretin';
+			$item->avatar = ($ticket->creator == $item->creator) ? $request->person->avatar : 'apretin';
+			$item->avatarColor = ($ticket->creator == $item->creator) ? $request->person->avatarColor : 'verde';
+		}
 
 		// get the support email address
 		$supportEmail = Config::pick('general')['support_email'];
 
 		// create data for the view
 		$content = [
+			'owner' => $owner,
 			'ticket' => $ticket,
-			'chats' => $chats,
 			'support' => $supportEmail
 		];
 
@@ -256,12 +237,7 @@ class Service
 		// submit to Google Analytics 
 		GoogleAnalytics::event('support_comment', $request->person->id);
 
-		// update the date of last contact
-		Database::query("UPDATE support_tickets SET updated=CURRENT_TIMESTAMP, unread_chats=1 WHERE id=$id");
-
-		// insert the chat
-		Database::query("
-			INSERT INTO support_chats (ticket_id, person_id, message) 
-			VALUES ($id, {$request->person->id}, '$message')");
+		// comment the ticket
+		Zendesk::createTicketComment($id, $request->person, $message);
 	}
 }

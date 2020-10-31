@@ -1,30 +1,14 @@
 <div class="row">
 	<div class="col s12">
-		<div class="card">
-			<div class="card-person grey lighten-5">
-				<span class="chip tiny clear"><i class="material-icons icon">perm_contact_calendar</i> <%= moment(ticket.inserted).format('D [de] MMM, YYYY h:mm A') %></span>
-				<span class="chip tiny clear right <%= ticket.status %>"><i class="material-icons icon">label</i> <%= statusCode[ticket.status] %></span>
-			</div>
-			<div class="card-content">
-				<p><%= ticket.title %></p>
-			</div>
-		</div>
-	</div>
-
-	<div class="col s12">
-		<% if (chats.length == 0) { %>
-			<p id="msg" class="center grey-text">Respondemos en menos de un día, pero en algunos casos puede demorarnos hasta 72 horas.</p>
-		<% } %>
-
 		<ul id="chat" class="chat">
-			<% chats.forEach(function(item) { %>
+			<% ticket.comments.forEach(function(item) { %>
 				<li class="<%= item.position %>">
 					<div class="person-avatar circle" face="<%= item.avatar %>" color="<%= item.avatarColor %>" size="30"></div>
 					<div class="head">
 						<a href="#!" class="<%= item.gender %>">@<%= item.username %></a>
 						<span class="date"><%= moment(item.inserted).format('MMM D, YYYY h:mm A') %></span>
 					</div>
-					<span class="text"><%= item.message %></span>
+					<span class="text"><%= item.comment %></span>
 				</li>
 			<% }) %>
 		</ul>
@@ -55,7 +39,7 @@
 <div id="newTicketModal" class="modal bottom-sheet">
 	<div class="modal-content">
 		<div class="input-field">
-			<textarea id="message" ticket="<%= ticket.id %>" username="<%= ticket.username %>" gender="<%= ticket.gender %>" avatar="<%= ticket.avatar %>" avatarColor="<%= ticket.avatarColor %>" class="materialize-textarea" oninput="checkLength(200)"></textarea>
+			<textarea id="message" ticket="<%= ticket.id %>" username="<%= owner.username %>" gender="<%= owner.gender %>" avatar="<%= owner.avatar %>" avatarColor="<%= owner.avatarColor %>" class="materialize-textarea" oninput="checkLength(200)"></textarea>
 			<label for="message">Escriba su comentario</label>
 			<span class="helper-text">Restante: 200</span>
 		</div>
