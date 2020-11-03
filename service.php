@@ -170,19 +170,19 @@ class Service
 		// get params
 		$id = $response->input->data->id ?? '';
 
+		// get the ticket
+		$ticket = Zendesk::getTicketDetails($id);
+
 		// display an error message
-		if(empty($id)) {
+		if(empty($ticket)) {
 			return $response->setTemplate('message.ejs', [
 				'header' => 'Algo raro pasó',
 				'icon' => 'sentiment_dissatisfied',
-				'text' => 'Hemos encontrado un problema temporal abriendo el servicio. Es posible que se arregle si reintenta desde el inicio.',
-				'btnLink' => 'AYUDA', 
+				'text' => 'Hemos encontrado un problema abriendo este ticket. Intente nuevamente; si no se arregla, por favor cree un nuevo ticket.',
+				'btnLink' => 'AYUDA SOPORTE', 
 				'btnCaption' => 'Reintentar'
 			]);
 		}
-
-		// get the ticket
-		$ticket = Zendesk::getTicketDetails($id);
 
 		// add ticket person values
 		$owner = (Object) [
