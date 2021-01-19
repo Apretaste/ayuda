@@ -2,6 +2,7 @@
 
 use Apretaste\Request;
 use Apretaste\Response;
+use Apretaste\Tutorial;
 use Apretaste\Challenges;
 use Framework\Config;
 use Framework\Zendesk;
@@ -146,6 +147,9 @@ class Service
 
 		// mark challenge as completed
 		Challenges::complete("write-to-support", $request->person->id);
+
+		// complete tutorial
+		Tutorial::complete($request->person->id, 'contact_support');
 
 		// submit to Google Analytics 
 		GoogleAnalytics::event('support_ticket', $request->person->id);
