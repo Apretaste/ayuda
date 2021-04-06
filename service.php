@@ -1,12 +1,12 @@
 <?php
 
+use Apretaste\Config;
 use Apretaste\Request;
+use Apretaste\Database;
 use Apretaste\Response;
 use Apretaste\Tutorial;
 use Apretaste\Challenges;
-use Framework\Config;
 use Framework\Zendesk;
-use Framework\Database;
 use Framework\GoogleAnalytics;
 
 class Service
@@ -36,9 +36,15 @@ class Service
 			FROM support_faq 
 			ORDER BY (upvote - downvote) DESC');
 
+		// create content
+		$content = [
+			"tutorialId" => Config::pick('general')['tutorial_id'],
+			"faq" => $faq
+		];
+
 		// send data to the view
 		$response->setCache();
-		$response->setTemplate('faq.ejs', ['faq' => $faq]);
+		$response->setTemplate('faq.ejs', $content);
 	}
 
 	/**

@@ -121,3 +121,14 @@ ul.chat li {
 	margin-left: 5px;
 	font-size: x-small;
 }
+
+/* ONE-LINE COLLECTION */
+
+.collection.one-line .avatar {
+	min-height: 63px;
+	padding-right: 45px;
+}
+
+.collection.one-line .material-icons {
+	margin-top: 5px;
+}
